@@ -1,0 +1,67 @@
+<nz-layout>
+    <nz-affix [nzOffsetTop]="0">
+        <nz-header style="  background-color: rgb(22, 145, 245)">
+
+            <ul nz-menu nzTheme="dark" nzMode="horizontal">
+                <img src="../../../../assets/tmp/img/cover25.png" alt="">
+                <li nz-menu-item>Trang chủ</li>
+                <li nz-menu-item>Giới Thiệu</li>
+                <li nz-menu-item>Sản phẩm</li>
+                <li nz-menu-item>Liên hệ</li>
+                <nz-input-group [nzSuffix]="suffixIconSearch" style="margin-left: 30px; width:620px;">
+                    <input type="text" nz-input placeholder="Tìm kiếm sản phẩm" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+                <a class="sign" style=" margin-left: 30px;">Đăng ký </a>|
+                <a class="sign">Đăng nhập</a>
+                <nz-badge [nzCount]="0" style="float: right; margin-top: 18px;">
+                    <i nz-icon nzType="shopping-cart" nzTheme="outline" style="font-size: 30px; color: white;"></i>
+                </nz-badge>
+
+            </ul>
+
+        </nz-header>
+    </nz-affix>
+    <nz-content>
+        <router-outlet></router-outlet>
+
+    </nz-content>
+    <nz-card style="width:100%; margin-top: 20px; margin-bottom: 0; background-color: rgb(194, 192, 192)">
+        <div class="footer" nz-row style="font-size: 20px; color: rgb(79, 164, 245);">
+            <div nz-col nzSpan="6">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0880958685525!2d105.76676691488332!3d21.029160785998073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454ba8ce7bfe3%3A0x14e56b32a84323cb!2zU-G7kSAwMiwgMiDEkMaw4budbmcgTMOqIMSQ4bupYyBUaOG7jSwgTeG7uSDEkMOsbmgsIFThu6sgTGnDqm0sIEjDoCBO4buZaSwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1637059823436!5m2!1sen!2s"
+                    width="350" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div nz-col nzSpan="10">
+                <img src="../../../../assets/tmp/img/cover25.png" alt="">
+                <div style="margin-bottom: 10px;"><i nz-icon nzType="pushpin" nzTheme="outline"></i>
+                    <span class="address"> Số 02, 2 Đường Lê Đức Thọ, Từ Liêm, Hà Nội,
+                        Vietnam</span>
+                </div>
+                <div style="margin-bottom: 10px;"><i nz-icon nzType="phone" nzTheme="outline"></i>
+                    <span class="address"> 0969 878 848</span>
+                </div>
+                <div><i nz-icon nzType="mail" nzTheme="outline"></i>
+                    <span class="address"> polygifts@gmail.com</span>
+                </div>
+            </div>
+            <div nz-col nzSpan="4">
+                <p style="font-weight: bold;">Chính sách</p>
+                <div> <a href="">Trả góp </a></div>
+                <div><a href="">Chính sách vận chuyển </a></div>
+                <div><a href="">Điều khoản & dịch vụ </a></div>
+                <div><a href="">Chính sách bảo mật</a></div>
+            </div>
+            <div nz-col nzSpan="4">
+                <p style="font-weight: bold;">Hỗ trợ khách hàng</p>
+                <div> <a href="">Giới thiệu</a></div>
+                <div><a href="">Câu hỏi thường gặp</a></div>
+                <div><a href="">Hướng dẫn mua hàng </a></div>
+                <div><a href="">Phương thức thanh toán</a></div>
+            </div>
+        </div>
+    </nz-card>
+</nz-layout>

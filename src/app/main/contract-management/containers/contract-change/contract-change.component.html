@@ -1,0 +1,21 @@
+<page-header class="site-page-header" [title]="'Chuyển đổi hợp đồng'" [breadcrumb]="breadcrumb">
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item> Quản lý hợp đồng </nz-breadcrumb-item>
+            <nz-breadcrumb-item><a routerLink="/contract-management/effect" routerLinkActive="active">Hợp đồng còn hiệu
+                    lực</a>
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </ng-template>
+</page-header>
+
+<div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="14">
+        <app-contract-form [changeForm]="true"></app-contract-form>
+    </div>
+
+    <div nz-col nzSpan="10" style="height: 486px; overflow-y: scroll">
+        <app-contract-card-user></app-contract-card-user>
+        <app-contract-nearest></app-contract-nearest>
+    </div>
+</div>

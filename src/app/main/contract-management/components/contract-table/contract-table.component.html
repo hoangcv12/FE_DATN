@@ -1,0 +1,47 @@
+<nz-card style="height: 97.4%">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" [nzScroll]="{ x: '1400px', y: '375px' }">
+        <thead>
+            <tr>
+                <th nzWidth="60px" [nzSelections]="listOfSelection" [(nzChecked)]="checked"
+                    [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th nzWidth="60px">STT</th>
+                <th>Mã hợp đồng</th>
+                <th>Họ và tên</th>
+                <th>Phòng ban</th>
+                <th>Loại hợp đồng</th>
+                <th>Ngày ký</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th *ngIf="typeParams == 'termination'">Ngày chấm dứt</th>
+                <th nzWidth="150px">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+                <td>{{ data.id }}</td>
+                <td>{{ data.code }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.dep }}</td>
+                <td>{{ data.type }}</td>
+                <td>{{ data.sign_date }}</td>
+                <td>{{ data.start_date }}</td>
+                <td>{{ data.start_date }}</td>
+                <td *ngIf="typeParams == 'termination'"><input type="text" nz-input [ngModel]="data.end_date" /> </td>
+                <td>
+                    <div nz-row>
+                        <button nz-button nzType="primary" nzShape="circle"
+                            routerLink="/contract-management/{{ typeParams }}/detail/{{ data.code }} "
+                            routerLinkActive="active"><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+                        <button *ngIf="action" nz-button nzType="primary" nzShape="circle"
+                            routerLink="/contract-management/effect/edit/{{ data.code }}" routerLinkActive="active"><i
+                                nz-icon nzType="edit" nzTheme="outline" nzWarning></i></button>
+                        <button nz-button nzType="primary" nzDanger nzShape="circle"><i nz-icon nzType="delete"
+                                nzTheme="outline"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>

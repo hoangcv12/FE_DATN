@@ -1,0 +1,18 @@
+<page-header class="site-page-header" [breadcrumb]="breadcrumb">
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item> Quản lý hợp đồng </nz-breadcrumb-item>
+            <nz-breadcrumb-item>Chỉnh sửa hợp đồng</nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </ng-template>
+</page-header>
+
+<div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="14">
+        <app-contract-form></app-contract-form>
+    </div>
+
+    <div nz-col nzSpan="10">
+        <app-contract-card-user></app-contract-card-user>
+    </div>
+</div>

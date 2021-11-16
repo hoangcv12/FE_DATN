@@ -1,0 +1,14 @@
+<app-contract-header-base (filter)="outputFilter($event)" [termination]="termination" [titleHeader]="titleHeader">
+</app-contract-header-base>
+
+<div nz-row [nzGutter]="6" *ngIf="filter">
+    <div nz-col nzSpan="19">
+        <app-contract-table [xScroll]="'1600px'" [action]="action" [typeParams]="typeParams"></app-contract-table>
+    </div>
+    <div nz-col nzSpan="5">
+        <app-contract-filter (filter)="outputFilter($event)"></app-contract-filter>
+    </div>
+</div>
+<div *ngIf="!filter">
+    <app-contract-table [xScroll]="'null'" [action]="action" [typeParams]="typeParams"> </app-contract-table>
+</div>

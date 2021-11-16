@@ -1,0 +1,49 @@
+<nz-card style="width: 280px" [nzBordered]="true" nzTitle="Bộ lọc" [nzExtra]="extraTemplate" [nzActions]="[action]">
+    <form nz-form>
+        <p>Loại hợp đồng</p>
+        <nz-form-item>
+            <nz-form-control>
+                <nz-select nzPlaceHolder="----Chọn loại hợp đồng----"></nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <p>Ngày bắt đầu</p>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">Từ</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">đến</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <p>Ngày kết thúc</p>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">Từ</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">đến</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-card>
+
+<ng-template #extraTemplate>
+    <button nz-button nzType="text" (click)="showFilter()"><i nz-icon nzType="close" nzTheme="outline"></i></button>
+</ng-template>
+<ng-template #action>
+    <button nz-button (click)="showFilter()">Hủy</button>
+    <button nz-button nzType="primary">Áp dụng</button>
+</ng-template>

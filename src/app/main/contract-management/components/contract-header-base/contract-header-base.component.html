@@ -1,0 +1,52 @@
+<page-header [breadcrumb]="breadcrumb" [title]="titleHeader" [action]="action">
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb>
+                <nz-breadcrumb-item> <a routerLink="/dashboard" routerLinkActive="active">Trang chủ</a>
+                </nz-breadcrumb-item>
+                <nz-breadcrumb-item>Quản lý hợp đồng</nz-breadcrumb-item>
+            </nz-breadcrumb>
+        </nz-breadcrumb>
+    </ng-template>
+    <ng-template #action>
+        <div nz-row style="width: 760px">
+            <div nz-col nzSpan="{{ termination == true ? 18 : 16 }}">
+                <nz-input-group [nzSuffix]="suffixIconSearch" class="rounded-lg">
+                    <input type="text" nz-input placeholder="Tìm kiếm hợp đồng" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+            </div>
+            <div nz-col nzSpan="{{ termination == true ? 6 : 8 }}">
+                <nz-button-group *ngIf="termination">
+                    <button nz-button routerLink="/contract-management/effect/add" routerLinkActive="active"><i nz-icon
+                            nzType="plus" nzTheme="outline"></i>Thêm</button>
+                    <button nz-button nzType="primary" nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight">
+                        <i nz-icon nzType="caret-down"></i>
+                    </button>
+                    <nz-dropdown-menu #menu1="nzDropdownMenu">
+                        <ul nz-menu>
+                            <li nz-menu-item><i nz-icon nzType="download" nzTheme="outline"
+                                    style="margin-right: 10px"></i> Export </li>
+                            <li nz-menu-item><i nz-icon nzType="file-excel" nzTheme="outline"
+                                    style="margin-right: 10px"></i> Chấm dứt hợp đồng</li>
+                            <li nz-menu-item><i nz-icon nzType="close-circle" nzTheme="outline"
+                                    style="margin-right: 10px"></i> Xóa</li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </nz-button-group>
+                <span *ngIf="!termination">
+                    <button nz-button nzType="primary" routerLink="/contract-management/add"
+                        routerLinkActive="active"><i nz-icon nzType="download" nzTheme="outline"
+                            style="margin-right: 10px"></i> Export</button>
+                    <button nz-button nzType="primary" routerLink="/contract-management/add"
+                        routerLinkActive="active"><i nz-icon nzType="close-circle" nzTheme="outline"
+                            style="margin-right: 10px"></i> Xóa</button>
+                </span>
+                <button nz-button nzType="primary" class="rounded-lg" style="margin-left: 5px" (click)="showFilter()"><i
+                        nz-icon nzType="filter" nzTheme="outline"></i></button>
+            </div>
+        </div>
+    </ng-template>
+</page-header>
