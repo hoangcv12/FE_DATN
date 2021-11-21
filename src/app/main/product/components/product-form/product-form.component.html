@@ -1,0 +1,84 @@
+<nz-card style="width:100%;">
+    <div nz-row>
+
+        <div nz-col nzSpan="16">
+            <form nz-form [formGroup]="productForm">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Tên sản phẩm</nz-form-label>
+                    <nz-form-control [nzSm]="13" [nzXs]="12">
+                        <input nz-input formControlName="name" />
+                        <ng-container *ngFor="let valid of validForm.name">
+                            <div class="mess-err" *ngIf="productForm.controls.name.hasError(valid.type)
+                                 && (productForm.controls.name.touched || productForm.controls.name.dirty )">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Giá</nz-form-label>
+                    <nz-form-control [nzSm]="10" [nzXs]="12">
+                        <nz-input-number formControlName="price" style="width: 445px;" [nzMin]="1000" [nzStep]="1">
+                        </nz-input-number>
+                        <ng-container *ngFor="let valid of validForm.price">
+                            <div class="mess-err" *ngIf="productForm.controls.price.hasError(valid.type)
+                                 && (productForm.controls.price.touched || productForm.controls.price.dirty )">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="4" [nzXs]="12" nzRequired>Số lượng</nz-form-label>
+                    <nz-form-control [nzSm]="12" [nzXs]="12">
+                        <nz-input-number formControlName="quantity" style="width: 445px;" [nzMin]="1" [nzStep]="1">
+                        </nz-input-number>
+                        <ng-container *ngFor="let valid of validForm.quantity">
+                            <div class="mess-err" *ngIf="productForm.controls.quantity.hasError(valid.type)
+                                 && (productForm.controls.quantity.touched || productForm.controls.quantity.dirty )">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzRequired>Thể Loại</nz-form-label>
+                    <nz-form-control [nzSpan]="13" nzValidateStatus="validating">
+                        <nz-select formControlName="category" nzAllowClear nzPlaceHolder="--- Chọn ---">
+                            <nz-option *ngFor="let item of categoryList" nzLabel={{item.name}} nzValue={{item.id}}>
+                            </nz-option>
+                        </nz-select>
+                        <ng-container *ngFor="let valid of validForm.category">
+                            <div class="mess-err" *ngIf="productForm.controls.category.hasError(valid.type)
+                                 && (productForm.controls.category.touched || productForm.controls.category.dirty )">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="4" nzRequired>Mô tả</nz-form-label>
+                    <nz-form-control>
+                        <textarea formControlName="description" style="width: 445px;" rows="5" nz-input></textarea>
+                        <ng-container *ngFor="let valid of validForm.description">
+                            <div class="mess-err"
+                                *ngIf="productForm.controls.description.hasError(valid.type)
+                                 && (productForm.controls.description.touched || productForm.controls.description.dirty )">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <div style="margin-left: 135px; margin-top: 40px">
+                    <button nz-button (click)="resetForm()">Hủy</button>
+                    <button nz-button nzType="primary" (click)="submit()"
+                        [disabled]="!productForm.valid">{{labelButton}}</button>
+                </div>
+            </form>
+        </div>
+        <div nz-col nzSpan="6">
+            <img alt="example" style="width: 280px; height: 280px;" [src]="image" />
+            <input style="margin-top: 30px;" type="file" (change)="fileChange($event)">
+        </div>
+    </div>
+</nz-card>

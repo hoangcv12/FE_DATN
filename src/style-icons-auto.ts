@@ -61,7 +61,9 @@ import {
   FileTextOutline,
   RetweetOutline,
   PushpinOutline,
-  PhoneOutline
+  PhoneOutline,
+  GiftOutline,
+  MinusSquareTwoTone
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS_AUTO = [
@@ -122,5 +124,7 @@ export const ICONS_AUTO = [
   WeiboCircleOutline,
   RetweetOutline,
   PushpinOutline,
-  PhoneOutline
+  PhoneOutline,
+  GiftOutline,
+  MinusSquareTwoTone
 ];

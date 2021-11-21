@@ -1,12 +1,12 @@
 <nz-layout>
     <nz-affix [nzOffsetTop]="0">
-        <nz-header style="  background-color: rgb(22, 145, 245)">
+        <nz-header style=" background-color: rgb(22, 145, 245)">
 
             <ul nz-menu nzTheme="dark" nzMode="horizontal">
-                <img src="../../../../assets/tmp/img/cover25.png" alt="">
-                <li nz-menu-item>Trang chủ</li>
+                <img style="height: 60px;" src="../../../../assets/tmp/img/cover25.png" alt="">
+                <li nz-menu-item routerLink="/polygift/home" routerLinkActive="active">Trang chủ</li>
                 <li nz-menu-item>Giới Thiệu</li>
-                <li nz-menu-item>Sản phẩm</li>
+                <li nz-menu-item routerLink="/polygift/products" routerLinkActive="active">Sản phẩm</li>
                 <li nz-menu-item>Liên hệ</li>
                 <nz-input-group [nzSuffix]="suffixIconSearch" style="margin-left: 30px; width:620px;">
                     <input type="text" nz-input placeholder="Tìm kiếm sản phẩm" />

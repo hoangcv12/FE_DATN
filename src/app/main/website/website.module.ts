@@ -3,9 +3,11 @@ import { SharedModule } from '@shared';
 import { WebsiteRoutingModule } from './website-routing.module';
 import { HomeComponent } from './container/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
+import { ProductComponent } from './container/product/product.component';
 const COMPONENTS: Array<Type<void>> = [
   HomeComponent,
-  HeaderComponent
+  HeaderComponent,
+  ProductComponent
 ];
 
 @NgModule({

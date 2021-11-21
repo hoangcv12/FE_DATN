@@ -29,8 +29,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: 'dashboard' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
-      { path: 'products', loadChildren: () => import('./product/product.module').then((m) => m.ProductModule) },
-      { path: 'contract-management/:type', loadChildren: () => import('./contract-management/contract-management.module').then((m) => m.ContractManagementModule) }
+      { path: 'products', loadChildren: () => import('./product/product.module').then((m) => m.ProductModule) }
     ]
   },
   {

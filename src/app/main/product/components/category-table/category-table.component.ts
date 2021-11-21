@@ -1,37 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from '../../model/product';
-import { ProductService } from '../../service/product-service.service';
-
-
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Category } from '../../model/category';
+import { CategoryService } from '../../service/category.service';
 
 @Component({
-  selector: 'app-product-table',
-  templateUrl: './product-table.component.html',
+  selector: 'app-category-table',
+  templateUrl: './category-table.component.html',
   styles: [
   ]
 })
-
-export class ProductTableComponent implements OnInit {
-  productList: any = [];
-  switchValue = false;
-  constructor(private proHttp: ProductService) { }
+export class CategoryTableComponent implements OnInit, OnChanges {
+  @Input() loadData: boolean = false;
+  @Output() idCate = new EventEmitter<number>();
+  categoryList: any;
+  constructor(private cateHttp: CategoryService) { }
 
   ngOnInit(): void {
-    this.getAllProduct();
+    this.getAllCategory();
   }
 
-  getAllProduct() {
-    this.proHttp.getAllProduct().subscribe(res => {
-      this.productList = res;
-      console.log(res);
+  ngOnChanges() {
+    if (this.loadData == true) {
+      this.getAllCategory();
+    }
+  }
 
+  update(id: number) {
+    this.idCate.emit(id)
+  }
+  getAllCategory() {
+    this.cateHttp.getAllCategory().subscribe(res => {
+      this.categoryList = res;
     });
   }
 
-  deleteProduct(id: number) {
-    this.proHttp.deleteProduct(id).subscribe(() => {
-      this.getAllProduct();
-    })
+  deleteCategory(id: number) {
+    this.cateHttp.deleteCategory(id).subscribe(() => {
+      this.getAllCategory();
+    });
   }
   listOfSelection = [
     {
@@ -57,8 +62,8 @@ export class ProductTableComponent implements OnInit {
   ];
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly Product[] = [];
-  listOfData: readonly Product[] = [];
+  listOfCurrentPageData: readonly Category[] = [];
+  listOfData: readonly Category[] = [];
   setOfCheckedId = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
@@ -79,7 +84,7 @@ export class ProductTableComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  onCurrentPageDataChange($event: readonly Product[]): void {
+  onCurrentPageDataChange($event: readonly Category[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -88,7 +93,4 @@ export class ProductTableComponent implements OnInit {
     this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
-
-
-
 }

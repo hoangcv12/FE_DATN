@@ -9,32 +9,36 @@
         </nz-breadcrumb>
     </ng-template>
 </page-header>
+
 <nz-card>
     <div nz-row>
-        <div nz-col nzSpan="17">
-            <nz-input-group style="width: 900px;" [nzSuffix]="suffixIconSearch" class="rounded-lg">
-                <input type="text" nz-input placeholder="Tìm kiếm sản phẩm" />
+        <div nz-col nzSpan="19">
+            <nz-input-group style="width: 1000px;" [nzSuffix]="suffixIconSearch" class="rounded-lg">
+                <input type="text" nz-input placeholder="Tìm kiếm thể loại" />
             </nz-input-group>
             <ng-template #suffixIconSearch>
                 <i nz-icon nzType="search"></i>
             </ng-template>
         </div>
-        <div nz-col nzSpan="7">
+        <div nz-col nzSpan="5">
             <nz-button-group>
-                <button nz-button style="margin-left: 40px" nzType="primary" routerLink="/admin/products/add"
-                    routerLinkActive="active"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm</button>
-                <button nz-button style="margin-left: 5px" nzType="primary" routerLink="/admin/products/add"
-                    routerLinkActive="active"><i nz-icon nzType="download" nzTheme="outline"></i>Exprot</button>
+                <button nz-button style="margin-left: 90px" nzType="primary" (click)="showModal()"><i nz-icon
+                        nzType="plus" nzTheme="outline"></i>Thêm</button>
                 <button style="margin-left: 5px" nz-button nzType="primary" nzDanger nzPlacement="bottomRight">
                     <i nz-icon nzType="delete" nzTheme="outline"></i> Xóa
                 </button>
             </nz-button-group>
-
-            <button nz-button nzType="primary" class="rounded-lg" style="margin-left: 5px"><i nz-icon nzType="filter"
-                    nzTheme="outline"></i></button>
         </div>
     </div>
 </nz-card>
+
 <nz-card>
-    <app-product-table></app-product-table>
+    <app-category-table [loadData]="table" (idCate)="addIdCate($event)"></app-category-table>
 </nz-card>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Thêm mới" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <nz-form-label nzRequired>Tên thể loại</nz-form-label>
+        <input [(ngModel)]="nameCategory" nz-input>
+    </ng-container>
+</nz-modal>

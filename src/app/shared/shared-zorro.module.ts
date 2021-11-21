@@ -28,6 +28,9 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzListModule } from 'ng-zorro-antd/list';
 export const SHARED_ZORRO_MODULES = [
   NzFormModule,
   NzGridModule,
@@ -58,5 +61,8 @@ export const SHARED_ZORRO_MODULES = [
   NzLayoutModule,
   NzAffixModule,
   NzBadgeModule,
-  NzCommentModule
+  NzCommentModule,
+  NzSwitchModule,
+  NzUploadModule,
+  NzListModule
 ];

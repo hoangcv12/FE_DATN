@@ -86,22 +86,32 @@ export class StartupService {
           {
             text: 'Dashboard',
             link: '/dashboard',
-            icon: { type: 'icon', value: 'bar-chart' }
+            icon: { type: 'icon', value: 'dashboard' }
           },
           {
             text: 'Quản lý sản phẩm',
-            icon: { type: 'icon', value: 'audit' },
-            link: 'admin/products'
+            icon: { type: 'icon', value: 'gift' },
+            children: [
+              {
+                text: 'Sản Phẩm',
+                link: '/admin/products'
+              },
+              {
+                text: 'Thể Loại',
+                link: '/admin/products/category'
+              }
+            ]
+
           },
           {
             text: 'Quản lý đơn hàng',
-            icon: { type: 'icon', value: 'audit' },
+            icon: { type: 'icon', value: 'inbox' },
             link: ''
 
           },
           {
             text: 'Quản lý khách hàng',
-            icon: { type: 'icon', value: 'audit' },
+            icon: { type: 'icon', value: 'team' },
             link: ''
 
           }
