@@ -63,7 +63,15 @@ import {
   PushpinOutline,
   PhoneOutline,
   GiftOutline,
-  MinusSquareTwoTone
+  MinusSquareTwoTone,
+  MinusOutline,
+  FacebookOutline,
+  GoogleOutline,
+  EyeInvisibleOutline,
+  SmileOutline,
+  SmileTwoTone,
+  DeleteTwoTone,
+  DeleteFill
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS_AUTO = [
@@ -126,5 +134,13 @@ export const ICONS_AUTO = [
   PushpinOutline,
   PhoneOutline,
   GiftOutline,
-  MinusSquareTwoTone
+  MinusSquareTwoTone,
+  MinusOutline,
+  FacebookOutline,
+  GoogleOutline,
+  EyeInvisibleOutline,
+  SmileOutline,
+  SmileTwoTone,
+  DeleteTwoTone,
+  DeleteFill
 ];

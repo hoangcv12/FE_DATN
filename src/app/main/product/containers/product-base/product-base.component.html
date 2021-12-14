@@ -11,18 +11,18 @@
 </page-header>
 <nz-card>
     <div nz-row>
-        <div nz-col nzSpan="17">
-            <nz-input-group style="width: 900px;" [nzSuffix]="suffixIconSearch" class="rounded-lg">
-                <input type="text" nz-input placeholder="Tìm kiếm sản phẩm" />
+        <div nz-col nzSpan="18">
+            <nz-input-group style="width: 100%;" [nzSuffix]="suffixIconSearch" class="rounded-lg">
+                <input type="text" [(ngModel)]="textSearchProduct" nz-input placeholder="Tìm kiếm sản phẩm" />
             </nz-input-group>
             <ng-template #suffixIconSearch>
                 <i nz-icon nzType="search"></i>
             </ng-template>
         </div>
-        <div nz-col nzSpan="7">
+        <div nz-col nzSpan="6">
             <nz-button-group>
                 <button nz-button style="margin-left: 40px" nzType="primary" routerLink="/admin/products/add"
-                    routerLinkActive="active"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm</button>
+                    routerLinkActive="active"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm </button>
                 <button nz-button style="margin-left: 5px" nzType="primary" routerLink="/admin/products/add"
                     routerLinkActive="active"><i nz-icon nzType="download" nzTheme="outline"></i>Exprot</button>
                 <button style="margin-left: 5px" nz-button nzType="primary" nzDanger nzPlacement="bottomRight">
@@ -30,11 +30,10 @@
                 </button>
             </nz-button-group>
 
-            <button nz-button nzType="primary" class="rounded-lg" style="margin-left: 5px"><i nz-icon nzType="filter"
-                    nzTheme="outline"></i></button>
+
         </div>
     </div>
 </nz-card>
 <nz-card>
-    <app-product-table></app-product-table>
+    <app-product-table [textSearch]="textSearchProduct"></app-product-table>
 </nz-card>

@@ -8,206 +8,31 @@
     </div>
     <div style="text-align: center; font-size: 24px;">
         <ul class="title">
-            <li><a routerLink="/polygift/home" routerLinkActive="active">Bán chạy nhất </a> </li>
-            <li><a routerLink="/polygift/home" routerLinkActive="active">Mới nhất</a></li>
+            <li><a (click)="banChay()">Bán chạy nhất </a> </li>
+            <li><a (click)="moiNhat()">Mới nhất</a></li>
         </ul>
     </div>
 
     <div nz-row>
-        <div class="image">
+        <div class="image" *ngFor="let data of listHome">
             <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Quả cầu tuyết" nzDescription="150.000đ"></nz-card-meta>
-            </nz-card>
-
-            <ng-template style="width: 280px; height: 280px;" class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+                <nz-card-meta [nzTitle]="data.name"
+                    [nzDescription]="((data.price | number: '1.0') + ' đ').toString().split(',').join('.')">
+                </nz-card-meta>
             </nz-card>
 
             <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
+                <img style="width: 280px; height: 280px;" alt="example" [src]="data.image " />
             </ng-template>
             <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
+                <div class="image__title"><button (click)="addCartRouter(data.id)" nzSize="large" nz-button
+                        nzType="primary">Mua
+                        ngay</button><button nzSize="large" nz-button nzType="primary"
+                        routerLink="/polygift/product/detail/{{data.id}}" routerLinkActive="active"><i nz-icon
+                            nzType="eye" nzTheme="outline"></i></button></div>
 
             </div>
         </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate1">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate1>
-                <img alt="example" src="http://bannenbiet.com/wp-content/uploads/2020/07/ngon-ngu-meo.jpg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-
-    </div>
-
-
-
-    <div nz-row>
-
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate2">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate2>
-                <img style="width: 280px; height: 280px;" alt="example"
-                    src="https://vnn-imgs-f.vgcloud.vn/2021/09/07/09/chu-meo-noi-tieng-mang-xa-hoi-voi-phong-cach-thoi-trang-sanh-dieu.jpeg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate2">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate2>
-                <img style="width: 280px; height: 280px;" alt="example"
-                    src="https://vnn-imgs-f.vgcloud.vn/2021/09/07/09/chu-meo-noi-tieng-mang-xa-hoi-voi-phong-cach-thoi-trang-sanh-dieu.jpeg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate2">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate2>
-                <img style="width: 280px; height: 280px;" alt="example"
-                    src="https://vnn-imgs-f.vgcloud.vn/2021/09/07/09/chu-meo-noi-tieng-mang-xa-hoi-voi-phong-cach-thoi-trang-sanh-dieu.jpeg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-        <div class="image">
-            <nz-card nzHoverable class="card" [nzCover]="coverTemplate2">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-
-            <ng-template class="image__img" #coverTemplate2>
-                <img style="width: 280px; height: 280px;" alt="example"
-                    src="https://vnn-imgs-f.vgcloud.vn/2021/09/07/09/chu-meo-noi-tieng-mang-xa-hoi-voi-phong-cach-thoi-trang-sanh-dieu.jpeg" />
-            </ng-template>
-            <div class="image__overlay image__overlay--primary">
-                <div class="image__title"><button nzSize="large" nz-button nzType="primary">Mua
-                        ngay</button><button nzSize="large" nz-button nzType="primary"><i nz-icon nzType="eye"
-                            nzTheme="outline"></i></button></div>
-
-            </div>
-        </div>
-
-
 
     </div>
 

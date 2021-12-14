@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../model/product';
 import { ProductService } from '../../service/product-service.service';
 
@@ -12,6 +12,7 @@ import { ProductService } from '../../service/product-service.service';
 })
 
 export class ProductTableComponent implements OnInit {
+  @Input() textSearch: any;
   productList: any = [];
   switchValue = false;
   constructor(private proHttp: ProductService) { }
@@ -20,11 +21,11 @@ export class ProductTableComponent implements OnInit {
     this.getAllProduct();
   }
 
+
   getAllProduct() {
     this.proHttp.getAllProduct().subscribe(res => {
       this.productList = res;
       console.log(res);
-
     });
   }
 

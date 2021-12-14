@@ -18,6 +18,7 @@ export class ProductService {
   private urlApi = 'http://localhost:8080/rest/products';
 
   getAllProduct(): Observable<any> {
+
     return this.http.get(this.urlApi, this.httpOptions);
   }
 
@@ -38,4 +39,5 @@ export class ProductService {
   updateProduct(data: any) {
     return this.http.put(this.urlApi, data, this.httpOptions);
   }
+
 }

@@ -13,6 +13,7 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { UserRegisterComponent } from './passport/register/register.component';
 import { LayoutWebComponent } from './website/layout-web/layout-web.component';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 const COMPONENTS: Array<Type<void>> = [
   LayoutWebComponent,
   DashboardComponent,
@@ -26,7 +27,7 @@ const COMPONENTS: Array<Type<void>> = [
 ];
 
 @NgModule({
-  imports: [SharedModule, MainRoutingModule],
+  imports: [SharedModule, MainRoutingModule, Ng2SearchPipeModule],
   declarations: COMPONENTS
 })
 export class MainModule { }

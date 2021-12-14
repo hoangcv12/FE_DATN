@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Category } from '../../model/category';
 import { CategoryService } from '../../service/category.service';

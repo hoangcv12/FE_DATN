@@ -12,6 +12,8 @@ import { ProductTableComponent } from './components/product-table/product-table.
 import { ProductAddComponent } from './containers/product-add/product-add.component';
 import { ProductBaseComponent } from './containers/product-base/product-base.component';
 import { ProductRoutingModule } from './product-routing.module';
+
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 const COMPONENTS: Array<Type<void>> = [ProductTableComponent,
   ProductBaseComponent,
   ProductFormComponent,
@@ -23,7 +25,7 @@ const COMPONENTS: Array<Type<void>> = [ProductTableComponent,
 ];
 
 @NgModule({
-  imports: [SharedModule, ProductRoutingModule],
+  imports: [SharedModule, ProductRoutingModule, Ng2SearchPipeModule],
   declarations: COMPONENTS,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

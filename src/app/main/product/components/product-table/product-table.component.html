@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data">
+        <tr *ngFor="let data of rowSelectionTable.data | filter: textSearch">
             <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
             <td nzAlign="center"><img src={{data.image}} alt=""></td>
             <td>{{ data.name }}</td>

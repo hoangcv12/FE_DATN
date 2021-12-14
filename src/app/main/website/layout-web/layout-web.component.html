@@ -1,23 +1,41 @@
 <nz-layout>
-    <nz-affix [nzOffsetTop]="0">
-        <nz-header style=" background-color: rgb(22, 145, 245)">
+    <nz-affix style="width: 100%;" [nzOffsetTop]="0">
+        <nz-header style=" background-color: rgb(22, 145, 245); height: 66px;">
 
             <ul nz-menu nzTheme="dark" nzMode="horizontal">
-                <img style="height: 60px;" src="../../../../assets/tmp/img/cover25.png" alt="">
+                <img style="height: 60px;" src="./assets/tmp/img/logo.png" alt="">
                 <li nz-menu-item routerLink="/polygift/home" routerLinkActive="active">Trang chủ</li>
                 <li nz-menu-item>Giới Thiệu</li>
                 <li nz-menu-item routerLink="/polygift/products" routerLinkActive="active">Sản phẩm</li>
                 <li nz-menu-item>Liên hệ</li>
-                <nz-input-group [nzSuffix]="suffixIconSearch" style="margin-left: 30px; width:620px;">
+                <nz-input-group [nzSuffix]="suffixIconSearch"
+                    style="margin-left: 30px; width:40%; position: relative;text-align: center; ">
                     <input type="text" nz-input placeholder="Tìm kiếm sản phẩm" />
                 </nz-input-group>
                 <ng-template #suffixIconSearch>
                     <i nz-icon nzType="search"></i>
                 </ng-template>
-                <a class="sign" style=" margin-left: 30px;">Đăng ký </a>|
-                <a class="sign">Đăng nhập</a>
-                <nz-badge [nzCount]="0" style="float: right; margin-top: 18px;">
-                    <i nz-icon nzType="shopping-cart" nzTheme="outline" style="font-size: 30px; color: white;"></i>
+                <span *ngIf="log == false">
+                    <a class="sign" style=" margin-left: 30px;" routerLink="/passport/register"
+                        routerLinkActive="active">Đăng ký </a>|
+                    <a class="sign" routerLink="/passport/login" routerLinkActive="active">Đăng nhập</a>
+                </span>
+                <span *ngIf="log == true">
+                    <i nz-icon style="font-size: 20px;margin-left: 30px;color: white;" nzType="user"
+                        nzTheme="outline"></i>
+                    <label class="sign" style="margin-left: 5px;font-size: 18px" nz-popover
+                        [nzPopoverContent]="contentTemplate" nzPopoverPlacement="bottomRight">{{username}}</label>
+                    <ng-template #contentTemplate>
+                        <div>
+                            <a class="username">Tài khoản của tôi</a>
+                            <a class="username">Đơn mua</a>
+                            <a class="username" (click)="logout()">Đăng xuất</a>
+                        </div>
+                    </ng-template>
+                </span>
+                <nz-badge [nzCount]="count" nzShowZero style="float: right; margin-top: 18px; margin-right: 55px;">
+                    <i (click)="clickCart()" nz-icon nzType="shopping-cart" nzTheme="outline"
+                        style="font-size: 30px; color: white;"></i>
                 </nz-badge>
 
             </ul>
@@ -36,9 +54,9 @@
                     width="350" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
             <div nz-col nzSpan="10">
-                <img src="../../../../assets/tmp/img/cover25.png" alt="">
+                <img style="height: 70px;" src="./assets/tmp/img/logo.png" alt="">
                 <div style="margin-bottom: 10px;"><i nz-icon nzType="pushpin" nzTheme="outline"></i>
-                    <span class="address"> Số 02, 2 Đường Lê Đức Thọ, Từ Liêm, Hà Nội,
+                    <span class="address"> Số 02, Đường Lê Đức Thọ, Từ Liêm, Hà Nội,
                         Vietnam</span>
                 </div>
                 <div style="margin-bottom: 10px;"><i nz-icon nzType="phone" nzTheme="outline"></i>
@@ -48,19 +66,19 @@
                     <span class="address"> polygifts@gmail.com</span>
                 </div>
             </div>
-            <div nz-col nzSpan="4">
+            <div nz-col style="margin-top: 20px;" nzSpan="4">
                 <p style="font-weight: bold;">Chính sách</p>
-                <div> <a href="">Trả góp </a></div>
-                <div><a href="">Chính sách vận chuyển </a></div>
-                <div><a href="">Điều khoản & dịch vụ </a></div>
-                <div><a href="">Chính sách bảo mật</a></div>
+                <div> <a>Trả góp </a></div>
+                <div><a>Chính sách vận chuyển </a></div>
+                <div><a>Điều khoản & dịch vụ </a></div>
+                <div><a>Chính sách bảo mật</a></div>
             </div>
-            <div nz-col nzSpan="4">
+            <div nz-col style="margin-top: 20px;" nzSpan="4">
                 <p style="font-weight: bold;">Hỗ trợ khách hàng</p>
-                <div> <a href="">Giới thiệu</a></div>
-                <div><a href="">Câu hỏi thường gặp</a></div>
-                <div><a href="">Hướng dẫn mua hàng </a></div>
-                <div><a href="">Phương thức thanh toán</a></div>
+                <div> <a>Giới thiệu</a></div>
+                <div><a>Câu hỏi thường gặp</a></div>
+                <div><a>Hướng dẫn mua hàng </a></div>
+                <div><a>Phương thức thanh toán</a></div>
             </div>
         </div>
     </nz-card>

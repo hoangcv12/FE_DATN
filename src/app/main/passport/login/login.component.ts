@@ -8,6 +8,7 @@ import { SettingsService, _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'passport-login',
@@ -17,7 +18,9 @@ import { finalize } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLoginComponent implements OnDestroy {
+  passwordVisible = false;
   constructor(
+    private auth: AuthService,
     fb: FormBuilder,
     private router: Router,
     private settingsService: SettingsService,
@@ -31,10 +34,8 @@ export class UserLoginComponent implements OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     this.form = fb.group({
-      userName: [null, [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      password: [null, [Validators.required, Validators.pattern(/^(ng\-alain\.com)$/)]],
-      mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      captcha: [null, [Validators.required]],
+      userName: [null, [Validators.required]],
+      password: [null, [Validators.required]],
       remember: [true]
     });
   }
@@ -84,7 +85,17 @@ export class UserLoginComponent implements OnDestroy {
     }, 1000);
   }
 
-  // #endregion
+
+  getJwt(data: object) {
+    this.auth.getJwt(data).subscribe(res => {
+      localStorage.setItem('tooken', res.jwttoken);
+      localStorage.setItem('username', res.user.username);
+      localStorage.setItem('role', res.user.role);
+      this.router.navigateByUrl('/polygift/home');
+
+    })
+
+  }
 
   submit(): void {
     this.error = '';
@@ -96,53 +107,48 @@ export class UserLoginComponent implements OnDestroy {
       if (this.userName.invalid || this.password.invalid) {
         return;
       }
-    } else {
-      this.mobile.markAsDirty();
-      this.mobile.updateValueAndValidity();
-      this.captcha.markAsDirty();
-      this.captcha.updateValueAndValidity();
-      if (this.mobile.invalid || this.captcha.invalid) {
-        return;
-      }
     }
+    const data = { username: this.form.value.userName, password: this.form.value.password }
+    this.getJwt(data);
+
 
     // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
-    this.loading = true;
-    this.cdr.detectChanges();
-    this.http
-      .post('/login/account?_allow_anonymous=true', {
-        type: this.type,
-        userName: this.userName.value,
-        password: this.password.value
-      })
-      .pipe(
-        finalize(() => {
-          this.loading = true;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe(res => {
-        if (res.msg !== 'ok') {
-          this.error = res.msg;
-          this.cdr.detectChanges();
-          return;
-        }
-        // 清空路由复用信息
-        this.reuseTabService.clear();
-        // 设置用户Token信息
-        // TODO: Mock expired value
-        res.user.expired = +new Date() + 1000 * 60 * 5;
-        this.tokenService.set(res.user);
-        // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-        this.startupSrv.load().subscribe(() => {
-          let url = this.tokenService.referrer!.url || '/';
-          if (url.includes('/passport')) {
-            url = '/';
-          }
-          this.router.navigateByUrl(url);
-        });
-      });
+    // this.loading = true;
+    // this.cdr.detectChanges();
+    // this.http
+    //   .post('/login/account?_allow_anonymous=true', {
+    //     type: this.type,
+    //     userName: this.userName.value,
+    //     password: this.password.value
+    //   })
+    //   .pipe(
+    //     finalize(() => {
+    //       this.loading = true;
+    //       this.cdr.detectChanges();
+    //     })
+    //   )
+    //   .subscribe(res => {
+    //     if (res.msg !== 'ok') {
+    //       this.error = res.msg;
+    //       this.cdr.detectChanges();
+    //       return;
+    //     }
+    //     // 清空路由复用信息
+    //     this.reuseTabService.clear();
+    //     // 设置用户Token信息
+    //     // TODO: Mock expired value
+    //     res.user.expired = +new Date() + 1000 * 60 * 5;
+    //     this.tokenService.set(res.user);
+    //     // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
+    //     this.startupSrv.load().subscribe(() => {
+    //       let url = this.tokenService.referrer!.url || '/';
+    //       if (url.includes('/passport')) {
+    //         url = '/';
+    //       }
+    //       this.router.navigateByUrl(url);
+    //     });
+    //   });
   }
 
   // #region social

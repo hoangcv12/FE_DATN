@@ -40,13 +40,6 @@ const routes: Routes = [
       { path: '', loadChildren: () => import('./website/website.module').then((m) => m.WebsiteModule) }
     ]
   },
-  // {
-  //     path: 'blank',
-  //     component: LayoutBlankComponent,
-  //     children: [
-  //     ]
-  // },
-  // passport
   {
     path: 'passport',
     component: LayoutPassportComponent,
