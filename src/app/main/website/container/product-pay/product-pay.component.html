@@ -1,0 +1,125 @@
+<div nz-row>
+    <div nz-col nzSpan="8">
+        <nz-card style="width: 400px; margin-top: 10px; height: 100%;" nzTitle="Thông tin đơn hàng">
+            <div nz-row *ngFor="let data of listCart" style="margin-top: 10px;">
+                <div nz-col nzSpan="5">
+                    <img style="width: 70px;" [src]="data.product.image" alt="">
+                </div>
+                <div nz-col nzSpan="18" style="margin-left: 10px;">
+                    {{data.product.name}}
+                    <div nz-row>
+                        <div nz-col nzSpan="5">
+                            SL: x{{data.quantity}}
+                        </div>
+                        <div nz-col nzSpan="7" nzOffset="12">
+                            {{(((data.quantity *
+                            data.product.price)| number: '1.0-5') + ' đ').toString().split(',').join('.')}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="12">
+        <nz-card nzTitle="Thông tin địa chỉ" style="height: 160px; width: 920px; margin-top: 10px;font-size: 18px;"
+            [nzExtra]="extraTemplate">
+            {{address}}
+        </nz-card>
+        <ng-template #extraTemplate>
+            <button nz-button nzType="default" (click)="showModal()"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm
+                mới</button>
+            <nz-modal [(nzVisible)]="isVisible" nzTitle="Thêm địa chỉ mới" (nzOnCancel)="handleCancel()"
+                (nzOnOk)="handleOk()">
+                <ng-container *nzModalContent>
+                    <form nz-form [formGroup]="payForm">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Vui lòng không để trống">
+                                <input nz-input formControlName="name" placeholder="Họ và tên" />
+                                <!-- <ng-container *ngFor="let valid of validForm.name">
+                                    <div style="color: red;" *ngIf="payForm.controls.name.hasError(valid.type)
+                                 && (payForm.controls.name.touched || payForm.controls.name.dirty )">
+                                        {{valid.message}}
+                                    </div>
+                                </ng-container> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control>
+                                <input nz-input formControlName="sdt" placeholder="Số điện thoại" />
+                                <ng-container *ngFor="let valid of validForm.sdt">
+                                    <div style="color: red;" *ngIf="payForm.controls.sdt.hasError(valid.type)
+                                 && (payForm.controls.sdt.touched)">
+                                        {{valid.message}}
+                                    </div>
+                                </ng-container>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Vui lòng không để trống">
+                                <nz-select formControlName="city" (ngModelChange)="changeCity()" nzShowSearch
+                                    nzAllowClear nzPlaceHolder="Tỉnh/Thành phố ">
+                                    <nz-option *ngFor="let item of apiVN" [nzLabel]="item.name" [nzValue]="item.name">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Vui lòng không để trống">
+                                <nz-select [nzDisabled]="disabledDistricts" (ngModelChange)="changeDistricts()"
+                                    formControlName="districts" nzShowSearch nzAllowClear nzPlaceHolder="Quận/Huyện">
+                                    <nz-option *ngFor="let item of apiDistricts" [nzLabel]="item.name"
+                                        [nzValue]="item.name"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Vui lòng không để trống">
+                                <nz-select [nzDisabled]="disabledWards" formControlName="wards" nzShowSearch
+                                    nzAllowClear nzPlaceHolder="Phường/Xã">
+                                    <nz-option *ngFor="let item of apiWards" [nzLabel]="item.name"
+                                        [nzValue]="item.name"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Vui lòng không để trống">
+                                <nz-input-group [nzSuffix]="textAreaClearTpl"
+                                    class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                                    <textarea formControlName="address" nz-input
+                                        placeholder="Địa chỉ cụ thể"></textarea>
+                                </nz-input-group>
+                                <ng-template #textAreaClearTpl>
+                                    <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                        *ngIf="textValue" (click)="textValue = null"></i>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <label style="margin-right: 20px;font-weight: 600;">Loại địa chỉ: </label>
+                            <nz-radio-group formControlName="type">
+                                <label nz-radio nzValue="A">Nhà riêng/chung cư</label>
+                                <label nz-radio nzValue="B">Cơ quan/Công ty</label>
+                            </nz-radio-group>
+                        </nz-form-item>
+                    </form>
+                </ng-container>
+                <div *nzModalFooter>
+                    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
+                    <button nz-button nzType="primary" (click)="handleOk()" [disabled]="!payForm.valid">Hoàn
+                        Thành</button>
+                </div>
+            </nz-modal>
+        </ng-template>
+        <nz-card style="width: 920px;height: 60%; margin-top: 10px;font-size: 18px;">
+            <p>Tổng tiền hàng: {{((total| number: '1.0') + '
+                đ').toString().split(',').join('.')}}</p>
+            <p>Phí vận chuyển: {{((transportFee| number: '1.0') + '
+                đ').toString().split(',').join('.')}}</p>
+            Tổng thanh toán:
+            <span style="color: red;font-size: 22px;">{{((total + transportFee| number: '1.0') + '
+                đ').toString().split(',').join('.')}}</span>
+            <button nzSize="large" style="display: block;margin-top: 20px;width: 280px;font-size: 18px;" nz-button
+                nzType="primary" (click)="paySubmit()">Thanh toán</button>
+        </nz-card>
+    </div>
+</div>

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
-import { filter, pairwise } from 'rxjs/operators';
+import { Component, OnInit, OnChanges, DoCheck } from '@angular/core';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { CartService } from '../service/cart.service';
 @Component({
   selector: 'app-layout-web',
@@ -8,11 +7,12 @@ import { CartService } from '../service/cart.service';
   styleUrls: ['./layout-web.component.less'
   ]
 })
-export class LayoutWebComponent implements OnInit {
+export class LayoutWebComponent implements OnInit, DoCheck {
   log: boolean;
   username: any;
   count: any;
   constructor(private router: Router, private cartService: CartService) {
+
   }
 
   ngOnInit(): void {
@@ -28,10 +28,15 @@ export class LayoutWebComponent implements OnInit {
     }
   }
 
+  ngDoCheck(): void {
+    //this.getAllCart();
+  }
 
   getAllCart() {
     this.cartService.getAllByUserName().subscribe(res => {
-      console.log("éo", res);
+      if (res.errorCode == 500 && res.message == null) {
+        this.router.navigateByUrl('passport/login')
+      }
       this.count = res.length;
     });
   }

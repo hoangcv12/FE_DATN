@@ -14,6 +14,7 @@ export class ProductCartComponent implements OnInit {
   quantity: number = 1;
   total: number = 0;
   length: number = 0;
+  allItem: any = new Set([]);
   allChecked = false;
   itemChecked = false;
   constructor(private cartService: CartService, private router: Router) { }
@@ -21,30 +22,24 @@ export class ProductCartComponent implements OnInit {
     this.getAllCart()
   }
 
-  checkAll(event: any) {
-    if (event == true) {
-      this.itemChecked = true
-    } else {
-      this.itemChecked = false
-    }
-  }
 
   getAllCart() {
     this.cartService.getAllByUserName().subscribe(res => {
-      if (res == 'Http failure response for http://localhost:8080/rest/cart: 401 OK') {
-        localStorage.removeItem("tooken");
-        this.router.navigateByUrl('passport/login')
-      }
+      // if (res == 'Http failure response for http://localhost:8080/rest/cart: 401 OK') {
+      //   localStorage.removeItem("tooken");
+      //   this.router.navigateByUrl('passport/login')
+      // }
+      this.total = 0;
+      res.forEach((r: any) => {
+        this.total += r.product.price * r.quantity
+      });
       this.listCart = res;
       this.length = res.length;
-      this.total = 0;
-      res.map((p: any) => {
-        this.total += p.product.price * p.quantity
-      })
     });
   }
 
   onChangeInputM(value: any, id: number) {
+    //thực hiện thay đổi khi bỏ chuột
     if (event?.cancelable != false) {
       let data: any = {};
       this.listCart.map((c: any) => {
@@ -86,6 +81,14 @@ export class ProductCartComponent implements OnInit {
 
   deleteById(id: number) {
     this.cartService.deleteCart(id).subscribe(() => {
+      this.getAllCart();
+    })
+  }
+
+  deleteCartAll() {
+    console.log("hế lô");
+
+    this.cartService.deleteCartByUser().subscribe(() => {
       this.getAllCart();
     })
   }

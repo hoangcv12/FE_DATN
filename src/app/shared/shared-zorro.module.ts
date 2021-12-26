@@ -33,6 +33,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 export const SHARED_ZORRO_MODULES = [
   NzFormModule,
   NzGridModule,
@@ -68,5 +69,6 @@ export const SHARED_ZORRO_MODULES = [
   NzUploadModule,
   NzListModule,
   NzRateModule,
-  NzResultModule
+  NzResultModule,
+  NzRadioModule
 ];

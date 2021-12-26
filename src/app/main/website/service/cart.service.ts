@@ -48,6 +48,10 @@ export class CartService {
     return this.http.delete(`${this.urlApi}/id/${id}`, this.httpOptions)
   }
 
+  deleteCartByUser() {
+    return this.http.delete(`${this.urlApi}/username`, this.httpOptions)
+  }
+
   findByProductId(idProduct: number) {
     return this.http.get(`${this.urlApi}/product?id=${idProduct}`, this.httpOptions)
   }

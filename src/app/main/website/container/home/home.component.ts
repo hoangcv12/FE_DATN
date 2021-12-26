@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, OnChanges {
     for (let i = 0; i < 12; i++) {
       this.sellingList.push(data[i]);
     }
-    for (let i = 12; i < 24; i++) {
+    for (let i = (data.length - 12); i < data.length; i++) {
       this.newList.push(data[i]);
     }
     this.listHome = this.sellingList;

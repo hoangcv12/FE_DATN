@@ -34,7 +34,7 @@ export class ProductComponent implements OnInit {
   getAllProduct() {
     this.ProductService.getAllProduct().subscribe(res => {
       this.totalLength = res.length
-
+      this.banChay = [];
       for (let i = 1; i < 6; i++) {
         this.banChay.push(res[i]);
       }
@@ -57,6 +57,8 @@ export class ProductComponent implements OnInit {
   }
 
   addCart(id: number) {
+    console.log("id", id);
+
     let product: any;
     this.productList.map((p: any) => {
       if (p.id = id) {
@@ -68,12 +70,14 @@ export class ProductComponent implements OnInit {
       if (res.errorCode == 400 && res.message == 'source cannot be null') {
         const dataAdd = { id: '', product: product, quantity: 1 }
         this.cartService.addCart(dataAdd).subscribe(() => {
+          this.getAllProduct()
           this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
         });
       }
       else {
         const dataUpdate = { id: res.id, product: product, quantity: (res.quantity + 1) }
         this.cartService.updateCart(dataUpdate).subscribe(() => {
+          this.getAllProduct()
           this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
         })
       }

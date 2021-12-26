@@ -1,3 +1,4 @@
+import { ProductPayComponent } from './container/product-pay/product-pay.component';
 import { ProductCartComponent } from './container/product-cart/product-cart.component';
 import { ProductDetailComponent } from './container/product-detail/product-detail.component';
 import { NgModule, Type, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -12,7 +13,8 @@ const COMPONENTS: Array<Type<void>> = [
   HeaderComponent,
   ProductComponent,
   ProductDetailComponent,
-  ProductCartComponent
+  ProductCartComponent,
+  ProductPayComponent
 ];
 
 @NgModule({

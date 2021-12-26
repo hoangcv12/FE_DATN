@@ -1,3 +1,4 @@
+import { ProductPayComponent } from './container/product-pay/product-pay.component';
 import { ProductCartComponent } from './container/product-cart/product-cart.component';
 import { ProductDetailComponent } from './container/product-detail/product-detail.component';
 import { NgModule } from '@angular/core';
@@ -9,7 +10,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'products', component: ProductComponent },
   { path: 'product/detail/:id', component: ProductDetailComponent },
-  { path: 'products/cart', component: ProductCartComponent }
+  { path: 'products/cart', component: ProductCartComponent },
+  { path: 'products/payment', component: ProductPayComponent }
 ];
 
 @NgModule({
