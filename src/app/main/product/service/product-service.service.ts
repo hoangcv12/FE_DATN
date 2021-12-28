@@ -18,8 +18,8 @@ export class ProductService {
   private urlApi = 'http://localhost:8080/rest/products';
 
   getAllProduct(): Observable<any> {
-
-    return this.http.get(this.urlApi, this.httpOptions);
+    const url = `${this.urlApi}/list/user`
+    return this.http.get(url, this.httpOptions);
   }
 
   addProduct(data: any) {

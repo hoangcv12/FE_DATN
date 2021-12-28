@@ -1,3 +1,5 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from './../service/auth.service';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,15 +15,18 @@ import { finalize } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserRegisterComponent implements OnDestroy {
-  constructor(fb: FormBuilder, private router: Router, private http: _HttpClient, private cdr: ChangeDetectorRef) {
+  constructor(fb: FormBuilder, private router: Router, private http: _HttpClient,
+    private cdr: ChangeDetectorRef,
+    private message: NzMessageService,
+    private authService: AuthService) {
     this.form = fb.group(
       {
         mail: [null, [Validators.required, Validators.email]],
         password: [null, [Validators.required, Validators.minLength(6), UserRegisterComponent.checkPassword.bind(this)]],
         confirm: [null, [Validators.required, Validators.minLength(6)]],
-        mobilePrefix: ['+86'],
-        mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-        captcha: [null, [Validators.required]]
+        captcha: [null, [Validators.required]],
+        fullname: [null, [Validators.required]],
+        username: [null, [Validators.required]]
       },
       {
         validators: MatchControl('password', 'confirm')
@@ -29,6 +34,7 @@ export class UserRegisterComponent implements OnDestroy {
     );
   }
 
+  code: any;
   // #region fields
 
   get mail(): AbstractControl {
@@ -87,48 +93,27 @@ export class UserRegisterComponent implements OnDestroy {
   }
 
   getCaptcha(): void {
-    if (this.mobile.invalid) {
-      this.mobile.markAsDirty({ onlySelf: true });
-      this.mobile.updateValueAndValidity({ onlySelf: true });
-      return;
-    }
-    this.count = 59;
-    this.cdr.detectChanges();
-    this.interval$ = setInterval(() => {
-      this.count -= 1;
-      this.cdr.detectChanges();
-      if (this.count <= 0) {
-        clearInterval(this.interval$);
-      }
-    }, 1000);
+    this.authService.getCode(this.form.value.mail).subscribe((res: any) => {
+      this.code = res.results;
+      this.message.create('success', 'Mã xác nhận đã được gửi tới email');
+    })
   }
 
   // #endregion
 
   submit(): void {
-    this.error = '';
-    Object.keys(this.form.controls).forEach(key => {
-      this.form.controls[key].markAsDirty();
-      this.form.controls[key].updateValueAndValidity();
-    });
-    if (this.form.invalid) {
-      return;
+    console.log(this.code);
+
+    if (this.form.value.captcha !== this.code) {
+      this.message.create('error', 'Mã xác nhận không đúng');
+    } else {
+      const data = { email: this.form.value.mail, username: this.form.value.username, password: this.form.value.password, fullname: this.form.value.fullname }
+      this.authService.createAccount(data).subscribe(() => {
+        this.router.navigateByUrl('passport/login')
+        this.message.create('success', 'Đăng ký thành công');
+      })
     }
 
-    const data = this.form.value;
-    this.loading = true;
-    this.cdr.detectChanges();
-    this.http
-      .post('/register?_allow_anonymous=true', data)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe(() => {
-        this.router.navigate(['passport', 'register-result'], { queryParams: { email: data.mail } });
-      });
   }
 
   ngOnDestroy(): void {

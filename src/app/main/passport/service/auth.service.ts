@@ -24,4 +24,13 @@ export class AuthService {
     return this.http.get(url, httpOptions)
   }
 
+  getCode(mail: any): Observable<any> {
+    const url = `http://localhost:8080/sendmail/${mail}`;
+    return this.http.get(url);
+  }
+
+  createAccount(data: any) {
+    const url = `http://localhost:8080/rest/accounts`;
+    return this.http.post(url, data);
+  }
 }

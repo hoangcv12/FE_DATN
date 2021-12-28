@@ -5,13 +5,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './container/home/home.component';
 import { ProductComponent } from './container/product/product.component';
+import { IntroduceComponent } from './container/introduce/introduce.component';
+import { ContactsComponent } from './container/contacts/contacts.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'products', component: ProductComponent },
   { path: 'product/detail/:id', component: ProductDetailComponent },
   { path: 'products/cart', component: ProductCartComponent },
-  { path: 'products/payment', component: ProductPayComponent }
+  { path: 'products/payment', component: ProductPayComponent },
+  { path: 'introduce', component: IntroduceComponent },
+  { path: 'contacts', component: ContactsComponent }
 ];
 
 @NgModule({

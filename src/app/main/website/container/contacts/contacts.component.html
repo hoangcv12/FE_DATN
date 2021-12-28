@@ -1,0 +1,53 @@
+<nz-card style="margin-top: 10px;">
+    <div nz-row>
+        <div nz-col nzSpan="10">
+            <p style="font-size: 18px;font-weight: 600;"> Liên hệ với chúng tôi</p>
+            Để liên hệ và nhận các thông in khuyến mại sớm nhất, xin vui lòng điền đầy đủ thông tin của bạn vào form
+            dưới đây. Chúng tôi sẽ liên lạc lại với bạn trong thời gian sớm nhất
+            <form nz-form [formGroup]="form" style="margin-top: 10px;">
+                <nz-form-item>
+                    <nz-form-control [nzErrorTip]="mailErrorTip">
+                        <nz-input-group nzSize="large" nzAddonBeforeIcon="user">
+                            <input nz-input formControlName="mail" placeholder="Họ và Tên" />
+                        </nz-input-group>
+                        <ng-template #mailErrorTip let-i>
+                            <ng-container *ngIf="i.errors?.required">Please enter your email!</ng-container>
+                            <ng-container *ngIf="i.errors?.email">The email address is in the wrong format!
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                    <nz-form-control style="margin-left: 10px;" [nzErrorTip]="'Please enter your username!'">
+                        <nz-input-group nzSize="large">
+                            <input nz-input formControlName="username" placeholder="Số điện thoại" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control [nzErrorTip]="'Please enter your fullname!'">
+                        <nz-input-group nzSize="large">
+                            <input nz-input formControlName="fullname" placeholder="Email" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <textarea nz-input placeholder="Nội dung cần tư vấn"
+                            [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <button nz-button nzType="primary" nzSize="large" type="submit" class="submit">
+                        Gửi đi
+                    </button>
+                </nz-form-item>
+            </form>
+        </div>
+        <div nz-col nzSpan="12" nzOffset="2">
+            <p style="font-weight: 500;font-size: 20px;">POLYGIFT SHOP</p>
+            <p style="font-size: 18px;">Địa chỉ: Số 02, đường Lê Đức Thọ, Mỹ Đình II, Nam Từ Liêm, Hà Nội</p>
+            <p style="font-size: 18px;"> SDT: 0969878848</p>
+            <p style="font-size: 18px;"> Email: polygifts@gmail.com</p>
+
+        </div>
+    </div>
+</nz-card>

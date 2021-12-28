@@ -12,6 +12,20 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
+    <nz-form-control [nzErrorTip]="'Please enter your username!'">
+      <nz-input-group nzSize="large">
+        <input nz-input formControlName="username" placeholder="Username" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="'Please enter your fullname!'">
+      <nz-input-group nzSize="large">
+        <input nz-input formControlName="fullname" placeholder="Fullname" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
     <nz-form-control [nzErrorTip]="'Please enter your password!'">
       <nz-input-group nzSize="large" nzAddonBeforeIcon="lock" nz-popover nzPopoverPlacement="right"
         nzPopoverTrigger="focus" [(nzPopoverVisible)]="visible" nzPopoverOverlayClassName="register-password-cdk"
@@ -50,7 +64,7 @@
       <nz-row [nzGutter]="8">
         <nz-col [nzSpan]="16">
           <nz-input-group nzSize="large" nzAddonBeforeIcon="mail">
-            <input nz-input formControlName="captcha" placeholder="Captcha" />
+            <input nz-input formControlName="captcha" placeholder="Code" />
           </nz-input-group>
         </nz-col>
         <nz-col [nzSpan]="8">
@@ -63,7 +77,8 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <button nz-button nzType="primary" nzSize="large" type="submit" [nzLoading]="loading" class="submit">
+    <button [disabled]="!form.valid" nz-button nzType="primary" nzSize="large" type="submit" [nzLoading]="loading"
+      class="submit">
       Register
     </button>
     <a class="login" routerLink="/passport/login">Already have an account?</a>

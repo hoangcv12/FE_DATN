@@ -8,13 +8,17 @@ import { HomeComponent } from './container/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ProductComponent } from './container/product/product.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { IntroduceComponent } from './container/introduce/introduce.component';
+import { ContactsComponent } from './container/contacts/contacts.component';
 const COMPONENTS: Array<Type<void>> = [
   HomeComponent,
   HeaderComponent,
   ProductComponent,
   ProductDetailComponent,
   ProductCartComponent,
-  ProductPayComponent
+  ProductPayComponent,
+  IntroduceComponent,
+  ContactsComponent
 ];
 
 @NgModule({
