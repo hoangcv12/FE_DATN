@@ -21,13 +21,31 @@ export class ProductTableComponent implements OnInit {
     this.getAllProduct();
   }
 
+  availableChange(event: any, id: number) {
+    var product: any;
+    this.productList.forEach((c: any) => {
+      if (c.id == id) {
+        product = c;
+      }
+    })
+    if (event == true) {
+      const data = { ...product, available: 1 }
+      this.proHttp.updateProduct(data).subscribe()
+    } else {
+      const data = { ...product, available: 0 }
+      this.proHttp.updateProduct(data).subscribe()
+    }
+
+
+  }
 
   getAllProduct() {
-    this.proHttp.getAllProduct().subscribe(res => {
+    this.proHttp.getAllProduct1().subscribe(res => {
       this.productList = res;
       console.log(res);
     });
   }
+
 
   deleteProduct(id: number) {
     this.proHttp.deleteProduct(id).subscribe(() => {

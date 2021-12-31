@@ -11,7 +11,8 @@ export class ProductService {
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('tooken')
     })
   };
 
@@ -19,6 +20,11 @@ export class ProductService {
 
   getAllProduct(): Observable<any> {
     const url = `${this.urlApi}/list/user`
+    return this.http.get(url);
+  }
+
+  getAllProduct1(): Observable<any> {
+    const url = `${this.urlApi}/list`
     return this.http.get(url, this.httpOptions);
   }
 

@@ -57,57 +57,68 @@ export class ProductComponent implements OnInit {
   }
 
   addCart(id: number) {
-    console.log("id", id);
+    if (localStorage.getItem('tooken') === null) {
+      this.router.navigateByUrl('passport/login')
+    }
+    else {
+      let product: any;
+      this.productList.map((p: any) => {
+        if (p.id = id) {
+          product = p;
+        }
+      })
 
-    let product: any;
-    this.productList.map((p: any) => {
-      if (p.id = id) {
-        product = p;
-      }
-    })
+      this.cartService.findByProductId(product.id).subscribe((res: any) => {
+        if (res.errorCode == 400 && res.message == 'source cannot be null') {
+          const dataAdd = { id: '', product: product, quantity: 1 }
+          this.cartService.addCart(dataAdd).subscribe(() => {
+            this.getAllProduct()
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+          });
+        }
+        else {
+          const dataUpdate = { id: res.id, product: product, quantity: (res.quantity + 1) }
+          this.cartService.updateCart(dataUpdate).subscribe(() => {
+            this.getAllProduct()
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+          })
+        }
+      })
+    }
 
-    this.cartService.findByProductId(product.id).subscribe((res: any) => {
-      if (res.errorCode == 400 && res.message == 'source cannot be null') {
-        const dataAdd = { id: '', product: product, quantity: 1 }
-        this.cartService.addCart(dataAdd).subscribe(() => {
-          this.getAllProduct()
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-        });
-      }
-      else {
-        const dataUpdate = { id: res.id, product: product, quantity: (res.quantity + 1) }
-        this.cartService.updateCart(dataUpdate).subscribe(() => {
-          this.getAllProduct()
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-        })
-      }
-    })
+
+
   }
 
   addCartRouter(id: number) {
+    if (localStorage.getItem('tooken') === null) {
+      this.router.navigateByUrl('passport/login')
+    }
+    else {
+      let product: any;
+      this.productList.map((p: any) => {
+        if (p.id = id) {
+          product = p;
+        }
+      })
+      this.cartService.findByProductId(product.id).subscribe((res: any) => {
+        if (res.errorCode == 400 && res.message == 'source cannot be null') {
+          const dataAdd = { id: '', product: product, quantity: 1 }
+          this.cartService.addCart(dataAdd).subscribe(() => {
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+            this.router.navigateByUrl('polygift/products/cart')
+          });
+        }
+        else {
+          const dataUpdate = { id: res.id, product: product, quantity: (res.quantity + 1) }
+          this.cartService.updateCart(dataUpdate).subscribe(() => {
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+            this.router.navigateByUrl('polygift/products/cart')
+          })
+        }
+      })
+    }
 
-    let product: any;
-    this.productList.map((p: any) => {
-      if (p.id = id) {
-        product = p;
-      }
-    })
-    this.cartService.findByProductId(product.id).subscribe((res: any) => {
-      if (res.errorCode == 400 && res.message == 'source cannot be null') {
-        const dataAdd = { id: '', product: product, quantity: 1 }
-        this.cartService.addCart(dataAdd).subscribe(() => {
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-          this.router.navigateByUrl('polygift/products/cart')
-        });
-      }
-      else {
-        const dataUpdate = { id: res.id, product: product, quantity: (res.quantity + 1) }
-        this.cartService.updateCart(dataUpdate).subscribe(() => {
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-          this.router.navigateByUrl('polygift/products/cart')
-        })
-      }
-    })
 
   }
 }

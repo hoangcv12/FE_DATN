@@ -24,7 +24,7 @@
             <td>{{data.createDate}}</td>
             <td nzAlign="center">{{data.quantity}}</td>
             <td nzAlign="center">
-                <nz-switch [ngModel]="data.available"></nz-switch>
+                <nz-switch [ngModel]="data.available" (ngModelChange)="availableChange($event, data.id)"></nz-switch>
             <td>
                 <div nz-row>
                     <button nz-button nzType="primary" nzShape="circle" routerLink="/admin/products/update/{{data.id}}"

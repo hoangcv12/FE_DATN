@@ -95,9 +95,10 @@ export class ProductPayComponent implements OnInit {
     if (this.address == '') {
       this.message.create('error', 'Chưa có thông tin địa chỉ giao hàng');
     } else {
-      const data = { id: '', address: this.address, sdt: this.payForm.value.sdt, }
+      const data = { id: '', address: this.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name }
       this.paymentService.creatOrder(data).subscribe(res => {
         this.createOrderDetail(res)
+        this.deleteCart();
         this.message.create('success', 'Đặt hàng thành công')
       })
       this.router.navigateByUrl('polygift/home')
@@ -108,7 +109,6 @@ export class ProductPayComponent implements OnInit {
     this.listCart.forEach((e: any) => {
       const data = { id: '', price: '', quantity: e.quantity, productDto: e.product, orderDto: order }
       this.paymentService.createOrderDetail(data).subscribe(() => {
-        this.deleteCart();
       })
     });
   }
