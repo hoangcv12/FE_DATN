@@ -42,7 +42,6 @@ export class ProductTableComponent implements OnInit {
   getAllProduct() {
     this.proHttp.getAllProduct1().subscribe(res => {
       this.productList = res;
-      console.log(res);
     });
   }
 

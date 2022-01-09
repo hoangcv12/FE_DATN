@@ -58,7 +58,7 @@ export class ProductPayComponent implements OnInit {
       districts: ['', [Validators.required]],
       wards: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      type: ['A']
+      noteCustomer: [''],
     });
   }
 
@@ -95,7 +95,12 @@ export class ProductPayComponent implements OnInit {
     if (this.address == '') {
       this.message.create('error', 'Chưa có thông tin địa chỉ giao hàng');
     } else {
-      const data = { id: '', address: this.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name }
+      const code = (Math.floor(Math.random() * 9000000) + 1000000);
+      const data = {
+        id: '', fee: '', address: this.payForm.value.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name
+        , total: this.total, createdDate: '', orderStatus: 0, orderCode: code, updatedDate: '', note: '', city: this.payForm.value.city
+        , districts: this.payForm.value.districts, wards: this.payForm.value.wards
+      }
       this.paymentService.creatOrder(data).subscribe(res => {
         this.createOrderDetail(res)
         this.deleteCart();
@@ -107,7 +112,7 @@ export class ProductPayComponent implements OnInit {
 
   createOrderDetail(order: any) {
     this.listCart.forEach((e: any) => {
-      const data = { id: '', price: '', quantity: e.quantity, productDto: e.product, orderDto: order }
+      const data = { id: '', price: e.price * e.quantity, quantity: e.quantity, product: e.product, order: order }
       this.paymentService.createOrderDetail(data).subscribe(() => {
       })
     });

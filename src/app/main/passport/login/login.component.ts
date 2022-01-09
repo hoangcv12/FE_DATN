@@ -89,10 +89,12 @@ export class UserLoginComponent implements OnDestroy {
   getJwt(data: object) {
     this.auth.getJwt(data).subscribe(res => {
       localStorage.setItem('tooken', res.jwttoken);
-      localStorage.setItem('username', res.user.username);
       localStorage.setItem('role', res.user.role);
-      this.router.navigateByUrl('/polygift/home');
-
+      localStorage.setItem('username', res.user.username);
+      if (res.user.role == '[ROLE_Admin]')
+        this.router.navigateByUrl('/admin');
+      else
+        this.router.navigateByUrl('/polygift/home');
     })
 
   }

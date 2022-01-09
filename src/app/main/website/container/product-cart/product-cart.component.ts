@@ -14,9 +14,6 @@ export class ProductCartComponent implements OnInit {
   quantity: number = 1;
   total: number = 0;
   length: number = 0;
-  allItem: any = new Set([]);
-  allChecked = false;
-  itemChecked = false;
   constructor(private cartService: CartService, private router: Router) { }
   ngOnInit(): void {
     this.getAllCart()
@@ -86,8 +83,6 @@ export class ProductCartComponent implements OnInit {
   }
 
   deleteCartAll() {
-    console.log("hế lô");
-
     this.cartService.deleteCartByUser().subscribe(() => {
       this.getAllCart();
     })

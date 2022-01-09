@@ -1,0 +1,42 @@
+<nz-table #basicTable [nzData]="order">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Khách hàng</th>
+            <th>Trạng thái</th>
+            <th>Ngày đặt hàng</th>
+            <th>Ngày cập nhật</th>
+            <th>Tổng tiền</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data">
+            <td>{{data.orderCode}}</td>
+            <td>{{data.fullname}}</td>
+            <td *ngIf="data.orderStatus == 0">
+                Chờ xác nhận
+            </td>
+            <td *ngIf="data.orderStatus == 1">
+                Đang giao
+            </td>
+            <td *ngIf="data.orderStatus == 2">
+                Hoàn thành
+            </td>
+            <td *ngIf="data.orderStatus == 3">
+                Thất bại
+            </td>
+            <td *ngIf="data.orderStatus == 4">
+                Từ chối
+            </td>
+            <td>{{data.createdDate | date:'short'}}</td>
+            <td>{{data.updatedDate | date:'short'}}</td>
+            <td>{{((data.total | number: '1.0') + '
+                đ').toString().split(',').join('.')}}</td>
+            <td>
+                <button nz-button nzType="primary" nzShape="circle" routerLink="/admin/order-manager/update/{{data.id}}"
+                    routerLinkActive="active"><i nz-icon nzType="edit" nzTheme="outline" nzWarning></i></button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

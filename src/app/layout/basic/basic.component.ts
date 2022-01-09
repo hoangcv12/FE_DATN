@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, RoutesRecognized } from '@angular/router';
 import { SettingsService, User } from '@delon/theme';
 import { LayoutDefaultOptions } from '@delon/theme/layout-default';
 import { environment } from '@env/environment';
+import { filter, pairwise } from 'rxjs/operators';
+import { CartService } from 'src/app/main/website/service/cart.service';
 
 @Component({
   selector: 'layout-basic',
@@ -67,7 +70,7 @@ import { environment } from '@env/environment';
     <theme-btn></theme-btn> -->
   `,
 })
-export class LayoutBasicComponent {
+export class LayoutBasicComponent implements OnInit {
   options: LayoutDefaultOptions = {
     logoExpanded: `./assets/logo-full.svg`,
     logoCollapsed: `./assets/logo.svg`,
@@ -77,6 +80,24 @@ export class LayoutBasicComponent {
   get user(): User {
     return this.settings.user;
   }
+  private previousUrl: string;
+  constructor(private settings: SettingsService, private router: Router, private cartService: CartService) {
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
+      .subscribe((events: RoutesRecognized[]) => {
+        this.previousUrl = events[0].urlAfterRedirects;
+        this.ngOnInit()
+      });
+    this.cartService.getAllByUserName().subscribe(res => {
+      if (res.errorCode == 500 && res.message == null) {
+        this.router.navigateByUrl('passport/login')
+      }
+    });
+  }
 
-  constructor(private settings: SettingsService) {}
+  ngOnInit(): void {
+    if (this.previousUrl == '/passport/login') {
+      location.reload();
+    }
+  }
 }

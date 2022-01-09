@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, DoCheck } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { CartService } from '../service/cart.service';
+import { filter, pairwise } from 'rxjs/operators';
 @Component({
   selector: 'app-layout-web',
   templateUrl: './layout-web.component.html',
@@ -11,13 +12,22 @@ export class LayoutWebComponent implements OnInit, DoCheck {
   log: boolean;
   username: any;
   count: any;
+
+  private previousUrl: string;
   constructor(private router: Router, private cartService: CartService) {
+    this.router.events
+      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
+      .subscribe((events: RoutesRecognized[]) => {
+        this.previousUrl = events[0].urlAfterRedirects;
+        this.ngOnInit()
+      });
 
   }
 
   ngOnInit(): void {
-    console.log("layout");
-
+    if (this.previousUrl == '/passport/login') {
+      location.reload();
+    }
     if (localStorage.getItem('tooken') === null) {
       this.log = false;
     }
@@ -53,6 +63,7 @@ export class LayoutWebComponent implements OnInit, DoCheck {
   logout() {
     this.count = 0;
     localStorage.removeItem("tooken");
+    localStorage.removeItem("role");
     console.log("rest");
 
     this.router.navigateByUrl('polygift/home')

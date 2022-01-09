@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, Subscriber } from 'rxjs';
@@ -21,6 +22,7 @@ export class ProductFormComponent implements OnInit {
   categoryList: any = [];
   productForm: FormGroup;
   labelButton: string = '';
+  productList: any = []
   constructor(private fb: FormBuilder,
     private cateHttp: CategoryService,
     private proHttp: ProductService,
@@ -32,9 +34,14 @@ export class ProductFormComponent implements OnInit {
     this.getAllCategory();
     this.createForm();
     this.labelButtonByRoute();
+    this.getAllProduct()
   }
 
-
+  getAllProduct() {
+    this.proHttp.getAllProduct1().subscribe(res => {
+      this.productList = res;
+    });
+  }
 
   resetFormUpdate() {
     this.productForm.patchValue({
@@ -147,6 +154,7 @@ export class ProductFormComponent implements OnInit {
     this.productForm.reset();
   }
   updateProduct() {
+    let temp = false;
     const name = this.productForm.value.name.trim();
     var category = '';
     this.categoryList.forEach((c: any) => {
@@ -154,26 +162,44 @@ export class ProductFormComponent implements OnInit {
         category = c;
       }
     })
-    const data = { ...this.productForm.value, image: this.image, name: name, id: this.product.id, createDate: this.product.createDate, available: this.product.available, category: category }
-    this.proHttp.updateProduct(data).subscribe(() => {
-      this.message.create('success', 'Cập nhật thành công');
+    this.productList.filter((p: any) => p.id !== this.product.id).forEach((p: any) => {
+      if (p.name == name) {
+        this.message.create('success', 'Sản phẩm đã tồn tại');
+        temp = true;
+      }
     });
+    const data = { ...this.productForm.value, image: this.image, name: name, id: this.product.id, createDate: this.product.createDate, available: this.product.available, category: category }
+    if (temp == false) {
+      this.proHttp.updateProduct(data).subscribe(() => {
+        this.message.create('success', 'Cập nhật thành công');
+      });
+    }
   }
 
   addProduct() {
     const name = this.productForm.value.name.trim();
+    let temp = false;
     var category = '';
     this.categoryList.forEach((c: any) => {
       if (c.id == this.productForm.value.category) {
         category = c;
       }
     })
-    const data = { ...this.productForm.value, image: this.image, name: name, id: '', createDate: new Date(), available: 1, category: category }
-    this.proHttp.addProduct(data).subscribe(() => {
-      this.message.create('success', 'Thêm thành công');
-      this.productForm.reset();
+    this.productList.forEach((p: any) => {
+      if (p.name == name) {
+        this.message.create('success', 'Sản phẩm đã tồn tại');
+        temp = true;
+      }
     });
+    if (temp == false) {
+      const data = { ...this.productForm.value, image: this.image, name: name, id: '', createDate: new Date(), available: 1, category: category }
+      this.proHttp.addProduct(data).subscribe(() => {
+        this.message.create('success', 'Thêm thành công');
+        this.productForm.reset();
+      });
+    }
   }
+
   readFile(file: File, subscriber: Subscriber<any>) {
     const filereader = new FileReader();
     filereader.readAsDataURL(file);

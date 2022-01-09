@@ -35,12 +35,6 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Vui lòng không để trống">
                                 <input nz-input formControlName="name" placeholder="Họ và tên" />
-                                <!-- <ng-container *ngFor="let valid of validForm.name">
-                                    <div style="color: red;" *ngIf="payForm.controls.name.hasError(valid.type)
-                                 && (payForm.controls.name.touched || payForm.controls.name.dirty )">
-                                        {{valid.message}}
-                                    </div>
-                                </ng-container> -->
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
@@ -95,31 +89,35 @@
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item>
-                            <label style="margin-right: 20px;font-weight: 600;">Loại địa chỉ: </label>
-                            <nz-radio-group formControlName="type">
-                                <label nz-radio nzValue="A">Nhà riêng/chung cư</label>
-                                <label nz-radio nzValue="B">Cơ quan/Công ty</label>
-                            </nz-radio-group>
+                            <nz-form-control>
+                                <nz-input-group [nzSuffix]="textAreaClearTpl"
+                                    class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                                    <textarea formControlName="noteCustomer" nz-input placeholder="Ghi chú"></textarea>
+                                </nz-input-group>
+                                <ng-template #textAreaClearTpl>
+                                    <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                        *ngIf="textValue" (click)="textValue = null"></i>
+                                </ng-template>
+                            </nz-form-control>
                         </nz-form-item>
                     </form>
                 </ng-container>
                 <div *nzModalFooter>
-                    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
+                    <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
                     <button nz-button nzType="primary" (click)="handleOk()" [disabled]="!payForm.valid">Hoàn
                         Thành</button>
                 </div>
             </nz-modal>
         </ng-template>
         <nz-card style="width: 920px;height: 60%; margin-top: 10px;font-size: 18px;">
-            <p>Tổng tiền hàng: {{((total| number: '1.0') + '
-                đ').toString().split(',').join('.')}}</p>
-            <p>Phí vận chuyển: {{((transportFee| number: '1.0') + '
-                đ').toString().split(',').join('.')}}</p>
-            Tổng thanh toán:
-            <span style="color: red;font-size: 22px;">{{((total + transportFee| number: '1.0') + '
+
+            Phí vận chuyển: <span style="font-style: italic;">nội thành từ 20.000đ - 40000đ</span>
+            <p style="margin-left: 129px; font-style: italic;">ngoại thành từ 30.000đ - 50.000đ</p>
+            Tạm tính:
+            <span style="color: red;font-size: 22px;">{{((total | number: '1.0') + '
                 đ').toString().split(',').join('.')}}</span>
             <button nzSize="large" style="display: block;margin-top: 20px;width: 280px;font-size: 18px;" nz-button
-                nzType="primary" (click)="paySubmit()">Thanh toán</button>
+                nzType="primary" (click)="paySubmit()">Đặt hàng</button>
         </nz-card>
     </div>
 </div>

@@ -106,7 +106,7 @@ export class StartupService {
           {
             text: 'Quản lý đơn hàng',
             icon: { type: 'icon', value: 'inbox' },
-            link: ''
+            link: '/admin/order-manager'
 
           },
           {

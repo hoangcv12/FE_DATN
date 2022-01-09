@@ -1,0 +1,162 @@
+<page-header [breadcrumb]="breadcrumb">
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb>
+                <nz-breadcrumb-item> <a routerLink="/dashboard" routerLinkActive="active">Quản lý đơn hàng</a>
+                </nz-breadcrumb-item>
+                <nz-breadcrumb-item>Thêm đơn hàng</nz-breadcrumb-item>
+            </nz-breadcrumb>
+        </nz-breadcrumb>
+    </ng-template>
+</page-header>
+<div nz-row>
+    <div nz-col nzSpan="15">
+        <nz-card style="min-height: 98%;" [nzBordered]="false" nzTitle="Thông tin đơn hàng">
+            <nz-select (ngModelChange)="changeSelect($event)" [(ngModel)]="productSelect"
+                style="margin-bottom: 10px;width: 250px;" nzShowSearch nzAllowClear nzPlaceHolder="Sản phẩm">
+                <nz-option *ngFor="let item of productList" nzLabel={{item.name}} nzValue={{item.id}}></nz-option>
+            </nz-select>
+            <nz-table #basicTable [nzData]="productCart">
+                <thead>
+                    <tr>
+
+                        <th>Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th nzAlign="center"><i (click)="deleteAll()" style="color: rgb(168, 167, 165);font-size: 16px;"
+                                nz-icon nzType="delete" nzTheme="fill"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td><img src={{data.image}} alt=""></td>
+                        <td>{{data.name}}</td>
+                        <td>
+                            <p style="margin-top: 15px;font-size: 16px;">{{((data.price | number: '1.0') + '
+                                đ').toString().split(',').join('.')}}</p>
+
+                        </td>
+                        <td>
+                            <nz-input-number style="width: 80px;" (change)="onChangeInput($event, data.id)" [nzMin]="1"
+                                [nzMax]="data.quantity" [ngModel]="data.quantityCart"
+                                (ngModelChange)="onChangeInputM($event, data.id)" [nzStep]="1">
+                            </nz-input-number>
+                        </td>
+                        <td style="color: red;">
+                            {{(((data.quantityCart *
+                            data.price)| number: '1.0-5') + ' đ').toString().split(',').join('.')}}
+                        </td>
+                        <td nzAlign="center">
+                            <i (click)="deleteItem(data.id)" style="color: rgb(168, 167, 165);font-size: 16px;" nz-icon
+                                nzType="delete" nzTheme="fill"></i>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            <button [disabled]="!payForm.valid" nz-button nzType="primary" (click)="paySubmit()">Thêm </button>
+            Phí vận chuyển: <nz-input-number [(ngModel)]="inputPhi" (change)="transportFeeChange()"
+                style="width: 120px;margin-left: 10px;" [nzMin]="20000" [nzMax]="50000" [nzStep]="1000">
+            </nz-input-number>
+            <span style="float: right;font-size: 20px;">Tổng tiền: {{((total | number: '1.0') + '
+                đ').toString().split(',').join('.')}}</span>
+
+        </nz-card>
+    </div>
+    <div nz-col nzSpan="8" nzOffset="1">
+        <form nz-form [formGroup]="payForm">
+            <nz-card nzTitle="Nhân viên">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-input-group [nzSuffix]="textAreaClearTpl"
+                            class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                            <textarea style="width: 380px;" formControlName="noteStaff" nz-input
+                                placeholder="Ghi chú của nhân viên"></textarea>
+                        </nz-input-group>
+                        <ng-template #textAreaClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="textValue" (click)="textValue = null"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-card>
+            <nz-card nzTitle="Thông tin khách hàng">
+
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <input nz-input formControlName="name" placeholder="Họ và tên" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="sdt" placeholder="Số điện thoại" />
+                        <ng-container *ngFor="let valid of validForm.sdt">
+                            <div style="color: red;" *ngIf="payForm.controls.sdt.hasError(valid.type)
+                         && (payForm.controls.sdt.touched)">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-select formControlName="city" (ngModelChange)="changeCity()" nzShowSearch nzAllowClear
+                            nzPlaceHolder="Tỉnh/Thành phố ">
+                            <nz-option *ngFor="let item of apiVN" [nzLabel]="item.name" [nzValue]="item.name">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-select [nzDisabled]="disabledDistricts" (ngModelChange)="changeDistricts()"
+                            formControlName="districts" nzShowSearch nzAllowClear nzPlaceHolder="Quận/Huyện">
+                            <nz-option *ngFor="let item of apiDistricts" [nzLabel]="item.name" [nzValue]="item.name">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-select [nzDisabled]="disabledWards" formControlName="wards" nzShowSearch nzAllowClear
+                            nzPlaceHolder="Phường/Xã">
+                            <nz-option *ngFor="let item of apiWards" [nzLabel]="item.name" [nzValue]="item.name">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-input-group [nzSuffix]="textAreaClearTpl"
+                            class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                            <textarea style="width: 380px;" formControlName="address" nz-input
+                                placeholder="Địa chỉ cụ thể"></textarea>
+                        </nz-input-group>
+                        <ng-template #textAreaClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="textValue" (click)="textValue = null"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group [nzSuffix]="textAreaClearTpl"
+                            class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                            <textarea style="width: 380px;" formControlName="noteCustomer" nz-input
+                                placeholder="Ghi chú của khách hàng"></textarea>
+                        </nz-input-group>
+                        <ng-template #textAreaClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="textValue" (click)="textValue = null"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+
+            </nz-card>
+        </form>
+
+    </div>
+</div>

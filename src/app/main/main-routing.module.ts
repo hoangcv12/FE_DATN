@@ -1,9 +1,10 @@
+import { OrderManagerModule } from './order-manager/order-manager.module';
 /* eslint-disable prettier/prettier */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SimpleGuard } from '@delon/auth';
 import { environment } from '@env/environment';
-
+import { Auth } from './auth';
 // layout
 import { LayoutBasicComponent } from '../layout/basic/basic.component';
 
@@ -23,13 +24,14 @@ const routes: Routes = [
   {
     path: 'admin',
     component: LayoutBasicComponent,
-    // canActivate: [SimpleGuard],
+    canActivate: [Auth],
     children: [
 
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: 'dashboard' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
-      { path: 'products', loadChildren: () => import('./product/product.module').then((m) => m.ProductModule) }
+      { path: 'products', loadChildren: () => import('./product/product.module').then((m) => m.ProductModule) },
+      { path: 'order-manager', loadChildren: () => import('./order-manager/order-manager.module').then((m) => m.OrderManagerModule) }
     ]
   },
   {
@@ -51,7 +53,6 @@ const routes: Routes = [
     ]
   },
   //Layout
-  { path: 'passport/callback/:type', component: CallbackComponent },
   { path: '**', redirectTo: 'exception/404' }
 ];
 
