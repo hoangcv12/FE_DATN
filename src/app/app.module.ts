@@ -5,6 +5,7 @@ import { APP_INITIALIZER, Injector, LOCALE_ID, NgModule, Type, CUSTOM_ELEMENTS_S
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { GoogleChartsModule } from 'angular-google-charts';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { Observable } from 'rxjs';
 
@@ -78,6 +79,7 @@ import { STWidgetModule } from './shared/st-widget/st-widget.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    GoogleChartsModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

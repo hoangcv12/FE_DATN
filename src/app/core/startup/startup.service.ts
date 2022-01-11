@@ -85,7 +85,7 @@ export class StartupService {
         children: [
           {
             text: 'Dashboard',
-            link: '/dashboard',
+            link: '/admin/dashboard',
             icon: { type: 'icon', value: 'dashboard' }
           },
           {
@@ -112,7 +112,7 @@ export class StartupService {
           {
             text: 'Quản lý khách hàng',
             icon: { type: 'icon', value: 'team' },
-            link: ''
+            link: '/admin/customer'
 
           }
         ]

@@ -1,4 +1,4 @@
-import { NgModule, Type } from '@angular/core';
+import { NgModule, Type, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@shared';
 
 // dashboard pages
@@ -28,6 +28,9 @@ const COMPONENTS: Array<Type<void>> = [
 
 @NgModule({
   imports: [SharedModule, MainRoutingModule, Ng2SearchPipeModule],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
   declarations: COMPONENTS
 })
 export class MainModule { }

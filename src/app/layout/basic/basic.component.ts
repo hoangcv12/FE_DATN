@@ -86,7 +86,7 @@ export class LayoutBasicComponent implements OnInit {
       .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
       .subscribe((events: RoutesRecognized[]) => {
         this.previousUrl = events[0].urlAfterRedirects;
-        this.ngOnInit()
+        //this.ngOnInit()
       });
     this.cartService.getAllByUserName().subscribe(res => {
       if (res.errorCode == 500 && res.message == null) {

@@ -27,11 +27,12 @@ const routes: Routes = [
     canActivate: [Auth],
     children: [
 
-      { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: 'dashboard' } },
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
       { path: 'products', loadChildren: () => import('./product/product.module').then((m) => m.ProductModule) },
-      { path: 'order-manager', loadChildren: () => import('./order-manager/order-manager.module').then((m) => m.OrderManagerModule) }
+      { path: 'order-manager', loadChildren: () => import('./order-manager/order-manager.module').then((m) => m.OrderManagerModule) },
+      { path: 'customer', loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule) }
     ]
   },
   {
@@ -50,6 +51,13 @@ const routes: Routes = [
       { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
       { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: 'pro-register-result' } },
       { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: 'lock' } }
+    ]
+  },
+  {
+    path: 'exception',
+    component: LayoutPassportComponent,
+    children: [
+      { path: '', loadChildren: () => import('./exception/exception.module').then((m) => m.ExceptionModule) }
     ]
   },
   //Layout

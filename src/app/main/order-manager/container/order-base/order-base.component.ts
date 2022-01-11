@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class OrderBaseComponent implements OnInit {
-
+  textSearchProduct: any;
   constructor() { }
 
   ngOnInit(): void {

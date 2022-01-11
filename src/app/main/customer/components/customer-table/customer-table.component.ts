@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { CustomerService } from './../../service/customer.service';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-customer-table',
@@ -7,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class CustomerTableComponent implements OnInit {
-
-  constructor() { }
+  customer: any = [];
+  @Input() textSearch: any;
+  constructor(private customerSevice: CustomerService) { }
 
   ngOnInit(): void {
+    this.getAll()
   }
 
+  getAll() {
+    this.customerSevice.getAll().subscribe((res: any) => {
+      console.log('customer', res);
+      this.customer = res
+    })
+  }
+
+  deleteProduct(id: any) {
+    this.customerSevice.delete(id).subscribe(() => {
+      this.getAll()
+    })
+  }
 }

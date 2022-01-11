@@ -109,14 +109,18 @@ export class OrderUpdateComponent implements OnInit {
   }
 
   transportFeeChange() {
-    this.total = 0;
-    this.total += this.inputPhi;
-    this.getTotal();
+    if (String(this.inputPhi) != '') {
+      this.total = 0;
+      this.total += this.inputPhi;
+      this.getTotal();
+    }
+
   }
 
   getTotal() {
     this.productCart.map((p: any) => {
-      this.total += p.quantity * p.product.price;
+      this.total += (p.quantity * p.product.price) + p.order.fee;
+
     })
   }
 
@@ -140,7 +144,7 @@ export class OrderUpdateComponent implements OnInit {
 
   onChangeInputM(value: any, id: number) {
     // thực hiện thay đổi khi bỏ chuột
-    if (event?.cancelable != false) {
+    if (event?.cancelable != false && value != null) {
       let data: any = {};
       this.productCart.map((c: any, index: any) => {
         if (id == c.product.id) {
@@ -256,7 +260,7 @@ export class OrderUpdateComponent implements OnInit {
     // const code = (Math.floor(Math.random() * 9000000) + 1000000);
     const data = {
       ...this.orderArray, fee: this.inputPhi, address: this.payForm.value.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name
-      , total: this.total, orderStatus: Number(this.payForm.value.orderStatus), note: '',
+      , total: this.total - this.inputPhi, orderStatus: Number(this.payForm.value.orderStatus), note: '',
       city: this.payForm.value.city
       , districts: this.payForm.value.districts, wards: this.payForm.value.wards,
       noteStaff: this.payForm.value.noteStaff, noteCustomer: this.payForm.value.noteCustomer

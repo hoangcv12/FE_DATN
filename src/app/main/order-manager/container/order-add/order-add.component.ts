@@ -224,7 +224,7 @@ export class OrderAddComponent implements OnInit {
     const code = (Math.floor(Math.random() * 9000000) + 1000000);
     const data = {
       id: '', fee: this.inputPhi, address: this.payForm.value.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name
-      , total: this.total, createdDate: '', orderStatus: 0, orderCode: code, updatedDate: '', note: '', city: this.payForm.value.city
+      , total: this.total - this.inputPhi, createdDate: '', orderStatus: 0, orderCode: code, updatedDate: '', note: '', city: this.payForm.value.city
       , districts: this.payForm.value.districts, wards: this.payForm.value.wards, noteStaff: this.payForm.value.noteStaff, noteCustomer: this.payForm.value.noteCustomer
     }
     console.log('order', data);

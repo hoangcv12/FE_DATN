@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of basicTable.data">
+        <tr *ngFor="let data of basicTable.data | filter: textSearch">
             <td>{{data.orderCode}}</td>
             <td>{{data.fullname}}</td>
             <td *ngIf="data.orderStatus == 0">
@@ -31,11 +31,11 @@
             </td>
             <td>{{data.createdDate | date:'short'}}</td>
             <td>{{data.updatedDate | date:'short'}}</td>
-            <td>{{((data.total | number: '1.0') + '
+            <td>{{((data.total + data.fee | number: '1.0') + '
                 đ').toString().split(',').join('.')}}</td>
             <td>
-                <button nz-button nzType="primary" nzShape="circle" routerLink="/admin/order-manager/update/{{data.id}}"
-                    routerLinkActive="active"><i nz-icon nzType="edit" nzTheme="outline" nzWarning></i></button>
+                <button nz-button nzType="primary" nzShape="circle" (click)="update(data.id)"><i nz-icon nzType="edit"
+                        nzTheme="outline" nzWarning></i></button>
             </td>
         </tr>
     </tbody>

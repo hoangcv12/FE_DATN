@@ -1,0 +1,81 @@
+<page-header [breadcrumb]="breadcrumb">
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb>
+                <nz-breadcrumb-item> <a routerLink="/dashboard" routerLinkActive="active">Quản lý khách hàng</a>
+                </nz-breadcrumb-item>
+                <nz-breadcrumb-item>Cập nhật </nz-breadcrumb-item>
+            </nz-breadcrumb>
+        </nz-breadcrumb>
+    </ng-template>
+</page-header>
+<nz-card>
+    <nz-tabset>
+        <nz-tab nzTitle="Thông tin khách hàng">
+            <form nz-form [formGroup]="customerForm" style="width: 400px;">
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <input nz-input formControlName="fullname" placeholder="Họ và tên" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="sdt" placeholder="Số điện thoại" />
+                        <ng-container *ngFor="let valid of validForm.sdt">
+                            <div style="color: red;" *ngIf="customerForm.controls.sdt.hasError(valid.type)
+                 && (customerForm.controls.sdt.touched)">
+                                {{valid.message}}
+                            </div>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng không để trống">
+                        <nz-select formControlName="group" nzAllowClear nzPlaceHolder="Nhóm khách hàng">
+                            <nz-option nzLabel="Khách lẻ" nzValue="Khách lẻ">
+                                <nz-option nzLabel="Khách buôn" nzValue="Khách buôn"></nz-option>
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+            <button nz-button nzType="primary">Cập nhật</button>
+        </nz-tab>
+        <nz-tab nzTitle="Lịch sử mua hàng">
+            <nz-table #basicTable [nzData]="order">
+                <thead>
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Tổng tiền </th>
+                        <th>Thời gian mua</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data ">
+                        <td>{{data.orderCode}}</td>
+                        <td>{{((data.total + data.fee | number: '1.0') + '
+                            đ').toString().split(',').join('.')}}</td>
+                        <td>{{data.createdDate | date:'short'}}</td>
+                        <td *ngIf="data.orderStatus == 0">
+                            Chờ xác nhận
+                        </td>
+                        <td *ngIf="data.orderStatus == 1">
+                            Đang giao
+                        </td>
+                        <td *ngIf="data.orderStatus == 2">
+                            Hoàn thành
+                        </td>
+                        <td *ngIf="data.orderStatus == 3">
+                            Thất bại
+                        </td>
+                        <td *ngIf="data.orderStatus == 4">
+                            Từ chối
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+
+    </nz-tabset>
+</nz-card>

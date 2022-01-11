@@ -13,14 +13,14 @@
     <div nz-row>
         <div nz-col nzSpan="18">
             <nz-input-group style="width: 100%;" [nzSuffix]="suffixIconSearch" class="rounded-lg">
-                <input type="text" nz-input placeholder="Tìm kiếm đơn hàng" />
+                <input type="text" [(ngModel)]="textSearchProduct" nz-input placeholder="Tìm kiếm đơn hàng" />
             </nz-input-group>
             <ng-template #suffixIconSearch>
                 <i nz-icon nzType="search"></i>
             </ng-template>
         </div>
         <div nz-col nzSpan="6">
-            <nz-button-group>
+            <nz-button-group style="float: right;">
                 <button nz-button style="margin-left: 40px" nzType="primary" routerLink="/admin/order-manager/add"
                     routerLinkActive="active"><i nz-icon nzType="plus" nzTheme="outline"></i>Thêm </button>
                 <button nz-button style="margin-left: 5px" nzType="primary"><i nz-icon nzType="download"
@@ -32,5 +32,5 @@
     </div>
 </nz-card>
 <nz-card>
-    <app-order-table></app-order-table>
+    <app-order-table [textSearch]="textSearchProduct"></app-order-table>
 </nz-card>
