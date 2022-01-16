@@ -85,9 +85,6 @@ export class ProductComponent implements OnInit {
         }
       })
     }
-
-
-
   }
 
   addCartRouter(id: number) {

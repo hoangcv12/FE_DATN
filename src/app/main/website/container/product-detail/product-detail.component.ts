@@ -53,7 +53,6 @@ export class ProductDetailComponent implements OnInit {
     })
   }
 
-
   changeProduct(id: number) {
     this.getProductById(id)
   }
@@ -63,12 +62,14 @@ export class ProductDetailComponent implements OnInit {
       if (res.errorCode == 400 && res.message == 'source cannot be null') {
         const dataAdd = { id: '', product: this.productCart, quantity: this.quantity }
         this.cartService.addCart(dataAdd).subscribe(() => {
+          this.paramsId();
           this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
         });
       }
       else {
         const dataUpdate = { id: res.id, product: this.productCart, quantity: (res.quantity + this.quantity) }
         this.cartService.updateCart(dataUpdate).subscribe(() => {
+          this.paramsId();
           this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
         })
       }
