@@ -17,7 +17,7 @@
             <p style="font-size: 20px;margin-bottom: 30px;">{{data.description}}</p>
             <span style="font-size: 18px; margin-right: 30px;">Số lượng</span>
             <nz-button-group style="border: rgb(183, 183, 187) solid 0.8px;">
-                <nz-input-number [(ngModel)]="quantity" [nzMin]="1" [nzMax]="10" [nzStep]="1">
+                <nz-input-number [(ngModel)]="quantity" [nzMin]="1" [nzMax]="data.quantity " [nzStep]="1">
                 </nz-input-number>
             </nz-button-group> <i style="margin-left: 10px;">{{data.quantity}} sản phẩm có sẵn</i>
             <div style="margin-top:15px ;">

@@ -22,6 +22,9 @@ export class PaymentService {
     return this.http.get(this.apiOrder);
   }
 
+  getAllDetail(): Observable<any> {
+    return this.http.get(this.apiOrderDetail);
+  }
   getOrderById(id: number): Observable<any> {
     return this.http.get(`${this.apiOrder}/${id}`);
   }
@@ -41,4 +44,7 @@ export class PaymentService {
     return this.http.get(`${this.apiOrderDetail}/order-id/${id}`);
   }
 
+  delete(id: number) {
+    return this.http.delete(`${this.apiOrderDetail}/${id}`);
+  }
 }

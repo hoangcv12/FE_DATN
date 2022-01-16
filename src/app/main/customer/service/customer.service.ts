@@ -20,6 +20,10 @@ export class CustomerService {
     return this.http.post(this.urlApi, data)
   }
 
+  update(data: any) {
+    return this.http.put(this.urlApi, data)
+  }
+
   delete(id: any) {
     const url = `${this.urlApi}/${id}`
     return this.http.delete(url);

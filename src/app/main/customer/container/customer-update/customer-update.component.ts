@@ -11,9 +11,10 @@ import { ActivatedRoute } from '@angular/router';
   ]
 })
 export class CustomerUpdateComponent implements OnInit {
-  tabs = [1, 2, 3];
   order: any = [];
   customerForm: FormGroup;
+  id: any;
+  createdDate: any;
   constructor(private fb: FormBuilder,
     private customerService: CustomerService,
     private message: NzMessageService,
@@ -33,6 +34,8 @@ export class CustomerUpdateComponent implements OnInit {
   getCustomer() {
     this.activatedRoute.params.subscribe(params => {
       this.customerService.getById(params.id).subscribe((res: any) => {
+        this.id = res.id;
+        this.createdDate = res.createdDate
         this.getCustomerOrder(res.sdt)
         this.customerForm.patchValue({
           fullname: res.fullname,
@@ -63,4 +66,11 @@ export class CustomerUpdateComponent implements OnInit {
     ],
 
   };
+
+  update() {
+    const data = { ...this.customerForm.value, id: this.id, createdDate: this.createdDate }
+    console.log(data);
+
+    this.customerService.update(data).subscribe(() => { this.message.create('success', 'Cập nhật thành công thành công') })
+  }
 }

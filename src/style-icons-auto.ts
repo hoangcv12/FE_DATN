@@ -72,7 +72,8 @@ import {
   SmileTwoTone,
   DeleteTwoTone,
   DeleteFill,
-  CarOutline
+  CarOutline,
+  HomeOutline
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS_AUTO = [
@@ -144,5 +145,6 @@ export const ICONS_AUTO = [
   SmileTwoTone,
   DeleteTwoTone,
   DeleteFill,
-  CarOutline
+  CarOutline,
+  HomeOutline
 ];

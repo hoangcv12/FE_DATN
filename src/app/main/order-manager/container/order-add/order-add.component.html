@@ -67,21 +67,7 @@
     </div>
     <div nz-col nzSpan="8" nzOffset="1">
         <form nz-form [formGroup]="payForm">
-            <nz-card nzTitle="Nhân viên">
-                <nz-form-item>
-                    <nz-form-control nzErrorTip="Vui lòng không để trống">
-                        <nz-input-group [nzSuffix]="textAreaClearTpl"
-                            class="ant-input-affix-wrapper-textarea-with-clear-btn">
-                            <textarea style="width: 380px;" formControlName="noteStaff" nz-input
-                                placeholder="Ghi chú của nhân viên"></textarea>
-                        </nz-input-group>
-                        <ng-template #textAreaClearTpl>
-                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
-                                *ngIf="textValue" (click)="textValue = null"></i>
-                        </ng-template>
-                    </nz-form-control>
-                </nz-form-item>
-            </nz-card>
+
             <nz-card nzTitle="Thông tin khách hàng">
 
                 <nz-form-item>

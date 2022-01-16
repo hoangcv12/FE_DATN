@@ -1,8 +1,26 @@
+<div style="float: right; margin-bottom: 5px;">
+    <span style="font-size: 16px;">Lọc theo trạng thái: </span>
+    <nz-select style="width: 140px;" ngModel="0" (ngModelChange)="changeStatus($event)" nzShowSearch nzAllowClear
+        nzPlaceHolder="Trạng thái đơn hàng">
+        <nz-option nzLabel="Chờ xác nhận" nzValue="0">
+        </nz-option>
+        <nz-option nzLabel="Đang giao" nzValue="1">
+        </nz-option>
+        <nz-option nzLabel="Hoàn thành" nzValue="2">
+        </nz-option>
+        <nz-option nzLabel="Thất bại" nzValue="3">
+        </nz-option>
+        <nz-option nzLabel="Từ chối" nzValue="4">
+        </nz-option>
+    </nz-select>
+</div>
+
 <nz-table #basicTable [nzData]="order">
     <thead>
         <tr>
             <th>Mã đơn hàng</th>
             <th>Khách hàng</th>
+            <th>Số điện thoại</th>
             <th>Trạng thái</th>
             <th>Ngày đặt hàng</th>
             <th>Ngày cập nhật</th>
@@ -14,6 +32,7 @@
         <tr *ngFor="let data of basicTable.data | filter: textSearch">
             <td>{{data.orderCode}}</td>
             <td>{{data.fullname}}</td>
+            <td>{{data.sdt}}</td>
             <td *ngIf="data.orderStatus == 0">
                 Chờ xác nhận
             </td>

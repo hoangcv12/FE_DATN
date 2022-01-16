@@ -105,13 +105,11 @@ export class OrderAddComponent implements OnInit {
       this.productCart1.map((c: any, index: any) => {
         if (id == c.id) {
           c.quantityCart = value;
-          data = c;
-          this.productCart1.splice(index, 1)
         }
       });
-      this.productCart1.push(data);
+
       localStorage.setItem('cart', JSON.stringify(this.productCart1))
-      this.ngOnInit();
+      this.cart();
     }
   }
 
@@ -123,19 +121,18 @@ export class OrderAddComponent implements OnInit {
     console.log(Number(event.target.value));
 
     let data: any = {};
-    this.productCart1.map((c: any, index: any) => {
-      if (id == c.id) {
-        data = c;
-        this.productCart1.splice(index, 1)
-      }
-    });
+
     if (Number(event.target.value) > data.quantity) {
       event.target.value = data.quantity;
     }
-    const data1 = { ...data, quantityCart: event.target.value }
-    this.productCart1.push(data1);
+    this.productCart1.map((c: any, index: any) => {
+      if (id == c.id) {
+        c.quantityCart = event.target.value
+      }
+    });
+
     localStorage.setItem('cart', JSON.stringify(this.productCart1))
-    this.ngOnInit();
+    this.cart();
   }
 
   deleteItem(id: number) {
@@ -147,11 +144,11 @@ export class OrderAddComponent implements OnInit {
     console.log(this.productCart1);
 
     localStorage.setItem('cart', JSON.stringify(this.productCart1))
-    this.ngOnInit();
+    this.cart();
   }
   deleteAll() {
     localStorage.removeItem('cart');
-    this.ngOnInit();
+    this.cart();
   }
   //khách hàng
   createForm() {
@@ -232,7 +229,7 @@ export class OrderAddComponent implements OnInit {
       this.createOrderDetail(res)
       this.message.create('success', 'Đặt hàng thành công')
       localStorage.removeItem('cart')
-      this.ngOnInit();
+      this.router.navigateByUrl('/admin/order-manager')
     })
   }
 

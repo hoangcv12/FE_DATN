@@ -7,6 +7,7 @@ import { ProductService } from 'src/app/main/product/service/product-service.ser
 import { PaymentService } from 'src/app/main/website/service/payment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderServiceService } from '../../service/order-service.service';
+import { SCHEMA_THIRDS_COMPONENTS } from '@shared';
 
 @Component({
   selector: 'app-order-update',
@@ -31,7 +32,14 @@ export class OrderUpdateComponent implements OnInit {
   total = 0;
   inputPhi = 0;
   order: any;
-  orderArray: any = []
+  orderArray: any = [];
+  productCart1: any = [];
+  delete: any = [];
+  status: any;
+  readonly: boolean = false;
+  disableCity: boolean = false;
+  noteStaffNew: any;
+  orderChangeList: any = [];
   constructor(private fb: FormBuilder,
     private http: HttpClient,
     private proHttp: ProductService,
@@ -46,35 +54,46 @@ export class OrderUpdateComponent implements OnInit {
     this.createForm();
     this.getAllProduct();
     this.getOrder();
-    this.getOrderDetail('start');
+    this.getOrderDetail();
+    this.getOrderChange();
+  }
+  cart() {
+    this.total = 0;
+    if (localStorage.getItem('cartu')) {
+      this.productCart = JSON.parse(localStorage.cartu);
+
+      this.getTotal();
+    } else {
+      this.productCart = []
+    }
+
   }
 
-  getOrderDetail(status: any) {
-    this.total = 0;
+  getOrderChange() {
+    this.activatedRoute.params.subscribe(params => {
+      this.orderService.getByOrderId(params.id).subscribe((res: any) => {
+        this.orderChangeList = res;
+      })
+    })
+  }
 
+  getOrderDetail() {
+    this.total = 0;
+    this.productCart = [];
+    localStorage.removeItem('cartu')
     this.activatedRoute.params.subscribe(params => {
       this.paymentService.getByOrderId(params.id).subscribe((res: any) => {
-        if (status == 'start') {
-          this.productCart = res
-          res.map((element: any) => {
-            this.orderService.addToCart(element)
-            this.order = element.order;
-          })
-        }
-        else if (status == 'nostart') {
-          this.orderService.cartItems$.subscribe((element: any) => {
-            this.productCart = element;
-            console.log('mới', this.productCart);
-          });
-        }
-        else {
-          this.orderService.cartItems$.subscribe((element: any) => {
 
-            this.productCart = element.filter((e: any) => e.product.id != status);
-            console.log('mới', this.productCart);
-          });
-        }
-        this.getTotal();
+        console.log('start', res);
+        localStorage.setItem('cartu', JSON.stringify(res))
+        this.productCart1 = res;
+        this.cart();
+        // this.productCart = res
+        res.map((element: any) => {
+          //this.orderService.addToCart(element)
+          this.order = element.order;
+        })
+
       })
     })
   }
@@ -82,8 +101,11 @@ export class OrderUpdateComponent implements OnInit {
   getOrder() {
     this.activatedRoute.params.subscribe(params => {
       this.paymentService.getOrderById(params.id).subscribe((res: any) => {
-        console.log(res);
-
+        this.status = res.orderStatus
+        if (res.orderStatus == 1) {
+          this.readonly = true;
+          this.disableCity = true;
+        }
         this.orderArray = res;
         this.inputPhi = res.fee
         this.payForm.patchValue({
@@ -94,7 +116,6 @@ export class OrderUpdateComponent implements OnInit {
           wards: res.wards,
           address: res.address,
           noteCustomer: res.noteCustomer,
-          noteStaff: res.noteStaff,
           orderStatus: String(res.orderStatus)
         })
       })
@@ -104,7 +125,6 @@ export class OrderUpdateComponent implements OnInit {
   getAllProduct() {
     this.proHttp.getAllProduct1().subscribe(res => {
       this.productList = res;
-      console.log(res);
     });
   }
 
@@ -133,25 +153,51 @@ export class OrderUpdateComponent implements OnInit {
         }
       });
       if (temp == false) {
+        if (this.delete.length > 0) {
+          this.delete.forEach((d: any, index: any) => {
+            if (event == d.idpro) {
+              this.delete.splice(index, 1)
+              console.log('thêm ', this.delete);
+            }
+          });
+        }
         this.proHttp.getProductById(event).subscribe((res: any) => {
           let data = { id: '', product: res, quantity: 1, order: this.order }
-          this.orderService.addToCart(data)
-          this.getOrderDetail('nostart');
+          // this.orderService.addToCart(data)
+          // this.getOrderDetail('nostart');
+          this.productCart1.push(data);
+          console.log('cart1', this.productCart1);
+          localStorage.setItem('cartu', JSON.stringify(this.productCart1))
+          this.cart();
         });
       }
     }
+    // this.productCart1.forEach((element: any, index: any) => {
+    //   if (element.id == res.id) {
+    //     element.quantityCart += 1;
+    //     data = element;
+    //     this.productCart1.splice(index, 1)
+    //   }
+    // });
+    // this.productCart1.push(data);
+    // console.log('cart1', this.productCart1);
+    // localStorage.setItem('cart', JSON.stringify(this.productCart1))
+    // this.cart();
   }
 
   onChangeInputM(value: any, id: number) {
     // thực hiện thay đổi khi bỏ chuột
     if (event?.cancelable != false && value != null) {
       let data: any = {};
-      this.productCart.map((c: any, index: any) => {
+      this.productCart1.map((c: any, index: any) => {
         if (id == c.product.id) {
           c.quantity = value;
+          data = c;
         }
       });
-      this.getOrderDetail('nostart');
+
+      localStorage.setItem('cartu', JSON.stringify(this.productCart1))
+      this.cart();
     }
   }
 
@@ -172,21 +218,26 @@ export class OrderUpdateComponent implements OnInit {
         c.quantity = event.target.value;
       }
     });
-    this.getOrderDetail('nostart');
+    //this.getOrderDetail('nostart');
+    localStorage.setItem('cartu', JSON.stringify(this.productCart1))
+    this.cart();
   }
 
-  deleteItem(idpro: any) {
-    // this.productCart.map((c: any, index: any) => {
-    //   if (idpro == c.product.id) {
-    //     c.splice(index, 1)
-    //   }
-    // });
-    this.orderService.delete(idpro)
-    this.getOrderDetail(idpro);
-  }
-  deleteAll() {
-    this.orderService.deleteAll([])
-    this.getOrderDetail('nostart');
+  deleteItem(id: any) {
+    if (this.productCart1.length > 1) {
+      this.productCart1.map((c: any, index: any) => {
+        if (id == c.product.id) {
+          this.productCart1.splice(index, 1)
+          if (c.id != '') {
+            this.delete.push({ id: c.id, idpro: c.product.id })
+          }
+        }
+      });
+    }
+    console.log(this.delete);
+
+    localStorage.setItem('cartu', JSON.stringify(this.productCart1))
+    this.cart();
   }
   //khách hàng
   createForm() {
@@ -230,6 +281,9 @@ export class OrderUpdateComponent implements OnInit {
       })
       this.disabledWards = false;
     }
+    if (this.disableCity == true) {
+      this.disabledWards = true;
+    }
   }
   changeCity() {
     if (this.payForm.value.city !== null) {
@@ -239,6 +293,9 @@ export class OrderUpdateComponent implements OnInit {
         });
       })
       this.disabledDistricts = false;
+    }
+    if (this.disableCity == true) {
+      this.disabledDistricts = true;
     }
   }
 
@@ -250,7 +307,6 @@ export class OrderUpdateComponent implements OnInit {
 
   getApiVN() {
     this.http.get('assets/data.json').subscribe(res => {
-      console.log(res);
       this.apiVN = res
     })
   }
@@ -262,25 +318,41 @@ export class OrderUpdateComponent implements OnInit {
       ...this.orderArray, fee: this.inputPhi, address: this.payForm.value.address, sdt: this.payForm.value.sdt, fullname: this.payForm.value.name
       , total: this.total - this.inputPhi, orderStatus: Number(this.payForm.value.orderStatus), note: '',
       city: this.payForm.value.city
-      , districts: this.payForm.value.districts, wards: this.payForm.value.wards,
-      noteStaff: this.payForm.value.noteStaff, noteCustomer: this.payForm.value.noteCustomer
+      , districts: this.payForm.value.districts, wards: this.payForm.value.wards, noteCustomer: this.payForm.value.noteCustomer
     }
-    console.log('order', data);
-    this.paymentService.update(data).subscribe(res => {
+    if (this.payForm.value.orderStatus != this.status) {
+      const data = { status: this.payForm.value.orderStatus, note: this.payForm.value.noteStaff, order: this.orderArray }
+      this.orderService.create(data).subscribe()
+    }
+    this.paymentService.update(data).subscribe(() => {
       this.createOrderDetail()
+      if (this.delete.length > 0) {
+        this.delete.forEach((c: any) => {
+          this.deleteOderDetail(c.id);
+        });
+        this.delete = [];
+      }
       this.message.create('success', 'Cập nhật thành công')
-      this.productCart.splice(0, this.productCart.length)
-      this.ngOnInit();
+      localStorage.removeItem('cart')
+      this.router.navigateByUrl('/admin/order-manager')
     })
+
   }
 
+  deleteOderDetail(id: any) {
+    this.paymentService.delete(id).subscribe()
+  }
 
   createOrderDetail() {
+    console.log("detail", this.productCart);
     this.productCart.forEach((e: any) => {
       const data = { id: e.id, quantity: e.quantity, product: e.product, order: e.order }
       console.log(data);
       this.paymentService.createOrderDetail(data).subscribe(() => {
+        this.getOrderDetail()
       })
     });
   }
+
+
 }

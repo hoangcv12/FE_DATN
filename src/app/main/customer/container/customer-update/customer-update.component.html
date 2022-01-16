@@ -39,7 +39,7 @@
                     </nz-form-control>
                 </nz-form-item>
             </form>
-            <button nz-button nzType="primary">Cập nhật</button>
+            <button nz-button nzType="primary" (click)="update()">Cập nhật</button>
         </nz-tab>
         <nz-tab nzTitle="Lịch sử mua hàng">
             <nz-table #basicTable [nzData]="order">

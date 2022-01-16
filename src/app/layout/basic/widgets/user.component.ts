@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { SettingsService, User } from '@delon/theme';
@@ -8,7 +8,7 @@ import { SettingsService, User } from '@delon/theme';
   template: `
     <div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="userMenu">
       <nz-avatar [nzSrc]="user.avatar" nzSize="small" class="mr-sm"></nz-avatar>
-      {{ user.name }}
+      {{ userName }}
     </div>
     <nz-dropdown-menu #userMenu="nzDropdownMenu">
       <div nz-menu class="width-sm">
@@ -34,15 +34,22 @@ import { SettingsService, User } from '@delon/theme';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderUserComponent {
+export class HeaderUserComponent implements OnInit {
   get user(): User {
     return this.settings.user;
   }
 
-  constructor(private settings: SettingsService, private router: Router, @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService) {}
+  constructor(private settings: SettingsService, private router: Router, @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService) { }
 
   logout(): void {
     this.tokenService.clear();
+    localStorage.removeItem("tooken");
+    localStorage.removeItem("role");
     this.router.navigateByUrl(this.tokenService.login_url!);
+  }
+
+  userName: any;
+  ngOnInit(): void {
+    this.userName = localStorage.getItem('username');
   }
 }

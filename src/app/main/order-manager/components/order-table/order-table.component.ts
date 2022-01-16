@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,15 +18,19 @@ export class OrderTableComponent implements OnInit {
     private paymentService: PaymentService, private message: NzMessageService) { }
 
   ngOnInit(): void {
-    this.getAll();
+    this.getAll(0);
   }
 
-  getAll() {
+  getAll(status: any) {
     this.orderService.getAll().subscribe((res: any) => {
-      this.order = res;
+      this.order = res.filter((p: any) => p.orderStatus == status)
     })
-
   }
+
+  changeStatus(status: any) {
+    this.getAll(status)
+  }
+
   update(id: number) {
     this.paymentService.getOrderById(id).subscribe((res: any) => {
       if (res.orderStatus == 2 || res.orderStatus == 3)

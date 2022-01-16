@@ -9,33 +9,22 @@ export class OrderServiceService {
 
   constructor(private http: HttpClient) { }
 
-  cartItems: any = new BehaviorSubject([]);
-  cartItems$ = this.cartItems.asObservable();
-
-  addToCart(product: any) {
-    const currentValue = this.cartItems.value; // get current items in cart
-    const updatedValue = [...currentValue, product]; // push new item in cart
-    if (updatedValue.length) {
-      this.cartItems.next(updatedValue); // notify to all subscribers
-    }
+  private urlApi = 'http://localhost:8080/rest/orderchange';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('tooken')
+    })
+  };
+  getAll() {
+    return this.http.get(this.urlApi)
   }
 
-  delete(data: any) {
-    const roomArr: any = this.cartItems.getValue();
-    roomArr.forEach((c: any, index: any) => {
-      if (data === c.product.id) {
-        console.log("cào ");
-        roomArr.splice(index, 1)
-      }
-    });
-    console.log('service', this.cartItems.getValue());
+  getByOrderId(id: any) {
+    return this.http.get(`${this.urlApi}/${id}`);
   }
 
-  deleteAll(data: any) {
-    const roomArr: any = this.cartItems.getValue();
-    this.cartItems.next(data);
+  create(data: any) {
+    return this.http.post(this.urlApi, data, this.httpOptions)
   }
-  // getAll(): Observable<any> {
-  //   return this.items;
-  // }
 }

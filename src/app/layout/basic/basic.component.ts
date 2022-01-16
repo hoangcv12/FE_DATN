@@ -10,16 +10,8 @@ import { CartService } from 'src/app/main/website/service/cart.service';
   selector: 'layout-basic',
   template: `
     <layout-default [options]="options" [asideUser]="asideUserTpl" [content]="contentTpl">
-      <layout-default-header-item direction="left">
-        <a layout-default-header-item-trigger href="//github.com/ng-alain/ng-alain" target="_blank">
-          <i nz-icon nzType="github"></i>
-        </a>
-      </layout-default-header-item>
-      <layout-default-header-item direction="left" hidden="mobile">
-        <a layout-default-header-item-trigger routerLink="/passport/lock">
-          <i nz-icon nzType="lock"></i>
-        </a>
-      </layout-default-header-item>
+      
+     
       <layout-default-header-item direction="left" hidden="pc">
         <div layout-default-header-item-trigger (click)="searchToggleStatus = !searchToggleStatus">
           <i nz-icon nzType="search"></i>
@@ -29,31 +21,16 @@ import { CartService } from 'src/app/main/website/service/cart.service';
         <header-search class="alain-default__search" [toggleChange]="searchToggleStatus"></header-search>
       </layout-default-header-item>
       <layout-default-header-item direction="right" hidden="mobile">
-        <div layout-default-header-item-trigger nz-dropdown [nzDropdownMenu]="settingsMenu" nzTrigger="click" nzPlacement="bottomRight">
-          <i nz-icon nzType="setting"></i>
+        <div routerLink="/polygift/home"
+                        routerLinkActive="active" layout-default-header-item-trigger nz-dropdown  nzTrigger="click" nzPlacement="bottomRight">
+          <i nz-icon nzType="home"></i>
         </div>
-        <nz-dropdown-menu #settingsMenu="nzDropdownMenu">
-          <div nz-menu style="width: 200px;">
-            <div nz-menu-item>
-              <header-fullscreen></header-fullscreen>
-            </div>
-            <div nz-menu-item>
-              <header-clear-storage></header-clear-storage>
-            </div>
-          </div>
-        </nz-dropdown-menu>
       </layout-default-header-item>
       <layout-default-header-item direction="right">
         <header-user></header-user>
       </layout-default-header-item>
       <ng-template #asideUserTpl>
-        <div nz-dropdown nzTrigger="click" [nzDropdownMenu]="userMenu" class="alain-default__aside-user">
-          <nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="user.avatar"></nz-avatar>
-          <div class="alain-default__aside-user-info">
-            <strong>{{ user.name }}</strong>
-            <p class="mb0">{{ user.email }}</p>
-          </div>
-        </div>
+      
         <nz-dropdown-menu #userMenu="nzDropdownMenu">
           <ul nz-menu>
             <li nz-menu-item routerLink="/pro/account/center">Account Center</li>
@@ -80,24 +57,17 @@ export class LayoutBasicComponent implements OnInit {
   get user(): User {
     return this.settings.user;
   }
-  private previousUrl: string;
+
   constructor(private settings: SettingsService, private router: Router, private cartService: CartService) {
-    this.router.events
-      .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
-      .subscribe((events: RoutesRecognized[]) => {
-        this.previousUrl = events[0].urlAfterRedirects;
-        //this.ngOnInit()
-      });
+
     this.cartService.getAllByUserName().subscribe(res => {
       if (res.errorCode == 500 && res.message == null) {
         this.router.navigateByUrl('passport/login')
       }
     });
   }
-
+  userName: any;
   ngOnInit(): void {
-    if (this.previousUrl == '/passport/login') {
-      location.reload();
-    }
+    this.userName = localStorage.getItem('username');
   }
 }

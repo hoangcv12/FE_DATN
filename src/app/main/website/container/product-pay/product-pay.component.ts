@@ -1,3 +1,4 @@
+import { CustomerService } from './../../../customer/service/customer.service';
 import { CartService } from './../../service/cart.service';
 import { PaymentService } from './../../service/payment.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -41,6 +42,7 @@ export class ProductPayComponent implements OnInit {
     private message: NzMessageService,
     private router: Router,
     private paymentService: PaymentService,
+    private customerService: CustomerService,
     private CartService: CartService
   ) { }
 
@@ -103,13 +105,17 @@ export class ProductPayComponent implements OnInit {
       }
       this.paymentService.creatOrder(data).subscribe(res => {
         this.createOrderDetail(res)
+        this.creatCustomer();
         this.deleteCart();
         this.message.create('success', 'Đặt hàng thành công')
       })
       this.router.navigateByUrl('polygift/home')
     }
   }
-
+  creatCustomer() {
+    const dataCustomer = { fullname: this.payForm.value.name, sdt: this.payForm.value.sdt, group: 'Khách lẻ', id: '', createdDate: '' }
+    this.customerService.create(dataCustomer).subscribe()
+  }
   createOrderDetail(order: any) {
     this.listCart.forEach((e: any) => {
       const data = { id: '', price: e.price * e.quantity, quantity: e.quantity, product: e.product, order: order }
