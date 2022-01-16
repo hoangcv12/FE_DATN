@@ -13,6 +13,7 @@ import { CartService } from '../../service/cart.service';
 export class ProductDetailComponent implements OnInit {
   product: any = [];
   quantity: number = 1;
+  quantityCheck: number = 0;
   productList: any = [];
   productCart: any;
   constructor(private ProductService: ProductService,
@@ -33,7 +34,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getAllProductByCate(id: number, idpro: number) {
-
     this.ProductService.getAllProduct().subscribe(res => {
       this.productList = res.filter((p: any) => p.category.id == id && p.id != idpro);
       this.productList.splice(6, this.productList.length)
@@ -41,9 +41,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getProductById(id: number) {
-    this.ProductService.getProductById(id).subscribe(res => {
-      console.log("mẹ", res);
-
+    this.ProductService.getProductById(id).subscribe((res: any) => {
+      this.quantityCheck = res.quantity;
       this.productCart = res;
       this.product = [];
       this.product.push(res);
@@ -58,43 +57,52 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addCart() {
-    this.cartService.findByProductId(this.productCart.id).subscribe((res: any) => {
-      if (res.errorCode == 400 && res.message == 'source cannot be null') {
-        const dataAdd = { id: '', product: this.productCart, quantity: this.quantity }
-        this.cartService.addCart(dataAdd).subscribe(() => {
-          this.paramsId();
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-        });
-      }
-      else {
-        const dataUpdate = { id: res.id, product: this.productCart, quantity: (res.quantity + this.quantity) }
-        this.cartService.updateCart(dataUpdate).subscribe(() => {
-          this.paramsId();
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-        })
-      }
-    })
+    if (this.quantityCheck > 0) {
+      this.cartService.findByProductId(this.productCart.id).subscribe((res: any) => {
+        if (res.errorCode == 400 && res.message == 'source cannot be null') {
+          const dataAdd = { id: '', product: this.productCart, quantity: this.quantity }
+          this.cartService.addCart(dataAdd).subscribe(() => {
+            this.paramsId();
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+          });
+        }
+        else {
+          const dataUpdate = { id: res.id, product: this.productCart, quantity: (res.quantity + this.quantity) }
+          this.cartService.updateCart(dataUpdate).subscribe(() => {
+            this.paramsId();
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+          })
+        }
+      })
+    }
+    else {
+      this.message.create('success', 'Mặt hàng này không còn');
+    }
   }
 
 
   addCartRouter() {
-    this.cartService.findByProductId(this.productCart.id).subscribe((res: any) => {
-      if (res.errorCode == 400 && res.message == 'source cannot be null') {
-        const dataAdd = { id: '', product: this.productCart, quantity: this.quantity }
-        this.cartService.addCart(dataAdd).subscribe(() => {
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-          this.router.navigateByUrl('polygift/products/cart');
-        });
-      }
-      else {
-        const dataUpdate = { id: res.id, product: this.productCart, quantity: (res.quantity + this.quantity) }
-        this.cartService.updateCart(dataUpdate).subscribe(() => {
-          this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
-          this.router.navigateByUrl('polygift/products/cart');
-        })
-      }
-    })
-
+    if (this.quantityCheck > 0) {
+      this.cartService.findByProductId(this.productCart.id).subscribe((res: any) => {
+        if (res.errorCode == 400 && res.message == 'source cannot be null') {
+          const dataAdd = { id: '', product: this.productCart, quantity: this.quantity }
+          this.cartService.addCart(dataAdd).subscribe(() => {
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+            this.router.navigateByUrl('polygift/products/cart');
+          });
+        }
+        else {
+          const dataUpdate = { id: res.id, product: this.productCart, quantity: (res.quantity + this.quantity) }
+          this.cartService.updateCart(dataUpdate).subscribe(() => {
+            this.message.create('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+            this.router.navigateByUrl('polygift/products/cart');
+          })
+        }
+      })
+    }
+    else {
+      this.message.create('success', 'Mặt hàng này không còn');
+    }
   }
 
   value = '';
